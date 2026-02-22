@@ -12,7 +12,15 @@ import (
 func NewDatabaseConnection(cfg config.DatabaseConfig) (*gorm.DB, error) {
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s",
 		cfg.Host, cfg.User, cfg.Password, cfg.DBName, cfg.Port, cfg.SSLMode)
-	return NewDatabaseConnectionWithDialector(postgres.Open(dsn), &gorm.Config{})
+	
+	// For NeonDB and pgbouncer compatibility: PreferSimpleProtocol: true
+	// prevents "prepared statement name is already in use" errors in transaction pooling
+	dialector := postgres.New(postgres.Config{
+		DSN:                  dsn,
+		PreferSimpleProtocol: true,
+	})
+	
+	return NewDatabaseConnectionWithDialector(dialector, &gorm.Config{})
 }
 
 // NewDatabaseConnectionWithDialector creates a new database connection with a custom dialector

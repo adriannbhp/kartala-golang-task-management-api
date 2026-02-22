@@ -1,6 +1,7 @@
 package users
 
 import (
+	"errors"
 	"github.com/adriannbhp/kartala-golang-task-management-api/pkg/response"
 	"net/http"
 
@@ -33,26 +34,30 @@ func NewHandler(userUsecase Usecase) *Handler {
 func (h *Handler) GetUserInfo(c *gin.Context) {
 	userIDStr, exists := c.Get("user_id")
 	if !exists {
-		response.Error(c, http.StatusUnauthorized, "User not authenticated")
+		response.Error(c, http.StatusUnauthorized, response.ErrUnauthorized)
 		return
 	}
 
 	userID, err := uuid.Parse(userIDStr.(string))
 	if err != nil {
-		response.Error(c, http.StatusInternalServerError, "Failed to parse user ID: "+err.Error())
+		response.Error(c, http.StatusBadRequest, response.ErrInvalidRequest)
 		return
 	}
 
 	user, err := h.userUsecase.GetUserByID(c.Request.Context(), userID)
 	if err != nil {
-		response.Error(c, http.StatusInternalServerError, "Failed to get user info: "+err.Error())
+		if errors.Is(err, ErrInternalDatabase) {
+			response.Error(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		response.Error(c, http.StatusInternalServerError, response.ErrInternalServer)
 		return
 	}
 
 	if user == nil {
-		response.Error(c, http.StatusNotFound, "User not found")
+		response.Error(c, http.StatusNotFound, ErrUserNotFound.Error())
 		return
 	}
 
-	response.Success(c, http.StatusOK, "User info retrieved successfully", user)
+	response.Success(c, http.StatusOK, response.SuccessFetch, user)
 }

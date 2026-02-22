@@ -52,6 +52,17 @@ func TestHandler_GetUserInfo(t *testing.T) {
 		assert.Equal(t, http.StatusInternalServerError, resp.Code)
 	})
 
+	t.Run("database_error", func(t *testing.T) {
+		mockUsecase.GetUserByIDFunc = func(ctx context.Context, id uuid.UUID) (*User, error) {
+			return nil, ErrInternalDatabase
+		}
+		req := httptest.NewRequest(http.MethodGet, "/me", nil)
+		resp := httptest.NewRecorder()
+		router.ServeHTTP(resp, req)
+		assert.Equal(t, http.StatusInternalServerError, resp.Code)
+		assert.Contains(t, resp.Body.String(), ErrInternalDatabase.Error())
+	})
+
 	t.Run("user_not_found", func(t *testing.T) {
 		mockUsecase.GetUserByIDFunc = func(ctx context.Context, id uuid.UUID) (*User, error) {
 			return nil, nil
@@ -84,6 +95,6 @@ func TestHandler_GetUserInfo(t *testing.T) {
 		resp := httptest.NewRecorder()
 		routerInvalidID.ServeHTTP(resp, req)
 
-		assert.Equal(t, http.StatusInternalServerError, resp.Code)
+		assert.Equal(t, http.StatusBadRequest, resp.Code)
 	})
 }

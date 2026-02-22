@@ -78,3 +78,29 @@ func TestSuccessWithPagination(t *testing.T) {
 	resData := res.Data.([]interface{})
 	assert.Len(t, resData, 2)
 }
+
+func TestValidationError(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	w := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(w)
+
+	validationErrors := map[string]string{
+		"email": "must be a valid email address",
+		"title": "is required",
+	}
+
+	ValidationError(c, http.StatusBadRequest, "Validation failed", validationErrors)
+
+	assert.Equal(t, http.StatusBadRequest, w.Code)
+	assert.True(t, c.IsAborted())
+
+	var res JSONResponse
+	err := json.Unmarshal(w.Body.Bytes(), &res)
+	assert.NoError(t, err)
+	assert.Equal(t, "error", res.Meta.Status)
+	assert.Equal(t, "Validation failed", res.Meta.Message)
+
+	resErrors := res.Errors.(map[string]interface{})
+	assert.Equal(t, "must be a valid email address", resErrors["email"])
+	assert.Equal(t, "is required", resErrors["title"])
+}

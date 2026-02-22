@@ -1,3 +1,4 @@
-h1:oBNeymIrrnIuldmDDeziQf6Q9HU4nU3Wqbe2jXUrINM=
-20260221235707_UserSchemas.up.sql h1:tAnRVCbfLlzYz4CgTcJSIWJotdHuuVs0xfH6AQ8SZLM=
-20260222011652_DeleteEntityRole.up.sql h1:A98q1vNMgROMR3HzKEwf2edQ+jyQLIKHzqJiOcoKViM=
+h1:3Ri1sh7uL4Y4Erqb64sehzDu9t4WOIgOLVl398QKFg4=
+20260221235707_user_schemas.up.sql h1:asr+q1qZVkLoGgL92AJ0LOhz2oklCsr/M4kvLG2gxj8=
+20260222011652_delete_entity_role.up.sql h1:WrwOC2nwPMpYBCyqWVMx+VrKoTnGHPvDkxArMScAtxk=
+20260222023327_task_schemas.up.sql h1:oumc8XGRYBtC04dd9D2sro6I4ZUV2XCZWxbDN30SZAc=

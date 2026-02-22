@@ -49,7 +49,7 @@ func TestAuthUsecase_Register(t *testing.T) {
 		param := &RegisterParameter{
 			Username: "testuser",
 			Email:    "test@example.com",
-			Password: "password123",
+			Password: "Password123!",
 		}
 
 		mockRepo.FindByEmailFunc = func(ctx context.Context, email string) (*users.User, error) { return nil, nil }

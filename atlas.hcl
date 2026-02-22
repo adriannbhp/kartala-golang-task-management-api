@@ -21,7 +21,6 @@ env "local" {
   dev = var.dev_url
   url = var.url
   migration {
-    dir    = "file://migrations"
-    format = golang-migrate
+    dir = "file://migrations?format=golang-migrate"
   }
 }

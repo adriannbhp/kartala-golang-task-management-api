@@ -39,7 +39,7 @@ func TestHandler_Register(t *testing.T) {
 	router.POST("/register", handler.Register)
 
 	t.Run("success", func(t *testing.T) {
-		param := RegisterParameter{Username: "newuser", Email: "new@example.com", Password: "password123"}
+		param := RegisterParameter{Username: "newuser", Email: "new@example.com", Password: "Password123!"}
 		body, _ := json.Marshal(param)
 
 		mockUsecase.RegisterFunc = func(ctx context.Context, p *RegisterParameter) (*users.User, error) {
@@ -55,8 +55,20 @@ func TestHandler_Register(t *testing.T) {
 		assert.Equal(t, http.StatusCreated, resp.Code)
 	})
 
+	t.Run("validation_error", func(t *testing.T) {
+		param := RegisterParameter{Username: "u", Email: "invalid", Password: "p"}
+		body, _ := json.Marshal(param)
+		
+		req := httptest.NewRequest(http.MethodPost, "/register", bytes.NewBuffer(body))
+		req.Header.Set("Content-Type", "application/json")
+		resp := httptest.NewRecorder()
+		router.ServeHTTP(resp, req)
+		assert.Equal(t, http.StatusBadRequest, resp.Code)
+		assert.Contains(t, resp.Body.String(), "errors")
+	})
+
 	t.Run("conflict_email", func(t *testing.T) {
-		param := RegisterParameter{Username: "exists", Email: "exists@example.com", Password: "password123"}
+		param := RegisterParameter{Username: "exists", Email: "exists@example.com", Password: "Password123!"}
 		body, _ := json.Marshal(param)
 		mockUsecase.RegisterFunc = func(ctx context.Context, p *RegisterParameter) (*users.User, error) {
 			return nil, ErrEmailAlreadyExists
@@ -69,7 +81,7 @@ func TestHandler_Register(t *testing.T) {
 	})
 
 	t.Run("conflict_username", func(t *testing.T) {
-		param := RegisterParameter{Username: "exists", Email: "e@e.com", Password: "password123"}
+		param := RegisterParameter{Username: "exists", Email: "new@example.com", Password: "Password123!"}
 		body, _ := json.Marshal(param)
 		mockUsecase.RegisterFunc = func(ctx context.Context, p *RegisterParameter) (*users.User, error) {
 			return nil, ErrUsernameExists
@@ -81,16 +93,29 @@ func TestHandler_Register(t *testing.T) {
 		assert.Equal(t, http.StatusConflict, resp.Code)
 	})
 
+	t.Run("database_error", func(t *testing.T) {
+		param := RegisterParameter{Username: "dbuser", Email: "db@example.com", Password: "Password123!"}
+		body, _ := json.Marshal(param)
+		mockUsecase.RegisterFunc = func(ctx context.Context, p *RegisterParameter) (*users.User, error) {
+			return nil, users.ErrInternalDatabase
+		}
+		req := httptest.NewRequest(http.MethodPost, "/register", bytes.NewBuffer(body))
+		req.Header.Set("Content-Type", "application/json")
+		resp := httptest.NewRecorder()
+		router.ServeHTTP(resp, req)
+		assert.Equal(t, http.StatusInternalServerError, resp.Code)
+	})
 
-	t.Run("invalid_request", func(t *testing.T) {
-		req := httptest.NewRequest(http.MethodPost, "/register", bytes.NewBufferString("invalid"))
+	t.Run("binding_error", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodPost, "/register", bytes.NewBufferString("invalid json"))
+		req.Header.Set("Content-Type", "application/json")
 		resp := httptest.NewRecorder()
 		router.ServeHTTP(resp, req)
 		assert.Equal(t, http.StatusBadRequest, resp.Code)
 	})
 
 	t.Run("internal_error", func(t *testing.T) {
-		param := RegisterParameter{Username: "err", Email: "err@example.com", Password: "password123"}
+		param := RegisterParameter{Username: "erruser", Email: "err@example.com", Password: "Password123!"}
 		body, _ := json.Marshal(param)
 		mockUsecase.RegisterFunc = func(ctx context.Context, p *RegisterParameter) (*users.User, error) {
 			return nil, assert.AnError
@@ -112,7 +137,7 @@ func TestHandler_Login(t *testing.T) {
 	router.POST("/login", handler.Login)
 
 	t.Run("success", func(t *testing.T) {
-		param := LoginParameter{Email: "test@example.com", Password: "password123"}
+		param := LoginParameter{Email: "test@example.com", Password: "Password123!"}
 		body, _ := json.Marshal(param)
 		mockUsecase.LoginFunc = func(ctx context.Context, p *LoginParameter) (string, string, *users.User, error) {
 			return "at", "rt", &users.User{}, nil
@@ -122,6 +147,16 @@ func TestHandler_Login(t *testing.T) {
 		resp := httptest.NewRecorder()
 		router.ServeHTTP(resp, req)
 		assert.Equal(t, http.StatusOK, resp.Code)
+	})
+
+	t.Run("validation_error", func(t *testing.T) {
+		param := LoginParameter{Email: "invalid", Password: ""}
+		body, _ := json.Marshal(param)
+		req := httptest.NewRequest(http.MethodPost, "/login", bytes.NewBuffer(body))
+		req.Header.Set("Content-Type", "application/json")
+		resp := httptest.NewRecorder()
+		router.ServeHTTP(resp, req)
+		assert.Equal(t, http.StatusBadRequest, resp.Code)
 	})
 
 	t.Run("unauthorized_password", func(t *testing.T) {
@@ -137,8 +172,8 @@ func TestHandler_Login(t *testing.T) {
 		assert.Equal(t, http.StatusUnauthorized, resp.Code)
 	})
 
-	t.Run("unauthorized_user", func(t *testing.T) {
-		param := LoginParameter{Email: "notfound@example.com", Password: "password123"}
+	t.Run("user_not_found", func(t *testing.T) {
+		param := LoginParameter{Email: "notfound@example.com", Password: "Password123!"}
 		body, _ := json.Marshal(param)
 		mockUsecase.LoginFunc = func(ctx context.Context, p *LoginParameter) (string, string, *users.User, error) {
 			return "", "", nil, ErrUserNotFound
@@ -150,8 +185,22 @@ func TestHandler_Login(t *testing.T) {
 		assert.Equal(t, http.StatusUnauthorized, resp.Code)
 	})
 
-	t.Run("invalid_request", func(t *testing.T) {
-		req := httptest.NewRequest(http.MethodPost, "/login", bytes.NewBufferString("invalid"))
+	t.Run("database_error", func(t *testing.T) {
+		param := LoginParameter{Email: "test@example.com", Password: "Password123!"}
+		body, _ := json.Marshal(param)
+		mockUsecase.LoginFunc = func(ctx context.Context, p *LoginParameter) (string, string, *users.User, error) {
+			return "", "", nil, users.ErrInternalDatabase
+		}
+		req := httptest.NewRequest(http.MethodPost, "/login", bytes.NewBuffer(body))
+		req.Header.Set("Content-Type", "application/json")
+		resp := httptest.NewRecorder()
+		router.ServeHTTP(resp, req)
+		assert.Equal(t, http.StatusInternalServerError, resp.Code)
+	})
+
+	t.Run("binding_error", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodPost, "/login", bytes.NewBufferString("invalid json"))
+		req.Header.Set("Content-Type", "application/json")
 		resp := httptest.NewRecorder()
 		router.ServeHTTP(resp, req)
 		assert.Equal(t, http.StatusBadRequest, resp.Code)
@@ -192,13 +241,6 @@ func TestHandler_RefreshToken(t *testing.T) {
 		assert.Equal(t, http.StatusOK, resp.Code)
 	})
 
-	t.Run("invalid_request", func(t *testing.T) {
-		req := httptest.NewRequest(http.MethodPost, "/refresh", bytes.NewBufferString("invalid"))
-		resp := httptest.NewRecorder()
-		router.ServeHTTP(resp, req)
-		assert.Equal(t, http.StatusBadRequest, resp.Code)
-	})
-
 	t.Run("unauthorized", func(t *testing.T) {
 		reqBody := map[string]string{"refresh_token": "expired"}
 		body, _ := json.Marshal(reqBody)
@@ -210,6 +252,14 @@ func TestHandler_RefreshToken(t *testing.T) {
 		resp := httptest.NewRecorder()
 		router.ServeHTTP(resp, req)
 		assert.Equal(t, http.StatusUnauthorized, resp.Code)
+	})
+
+	t.Run("binding_error", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodPost, "/refresh", bytes.NewBufferString("invalid json"))
+		req.Header.Set("Content-Type", "application/json")
+		resp := httptest.NewRecorder()
+		router.ServeHTTP(resp, req)
+		assert.Equal(t, http.StatusBadRequest, resp.Code)
 	})
 
 	t.Run("internal_error", func(t *testing.T) {

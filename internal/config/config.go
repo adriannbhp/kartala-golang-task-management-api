@@ -20,12 +20,13 @@ type AppConfig struct {
 }
 
 type DatabaseConfig struct {
-	Host     string
-	Port     string
-	User     string
-	Password string
-	DBName   string
-	SSLMode  string
+	Host       string
+	Port       string
+	User       string
+	Password   string
+	DBName     string
+	DBNameTest string
+	SSLMode    string
 }
 
 type SecretConfig struct {
@@ -72,6 +73,7 @@ func LoadConfig() (Config, error) {
 			User:     getEnv("DB_USER", "postgres"),
 			Password: getEnv("DB_PASSWORD", ""),
 			DBName:   getEnv("DB_NAME", "users_db"),
+			DBNameTest: getEnv("DB_NAME_TEST", "kartala_test"),
 			SSLMode:  getEnv("DB_SSLMODE", "disable"),
 		},
 		Secret: SecretConfig{

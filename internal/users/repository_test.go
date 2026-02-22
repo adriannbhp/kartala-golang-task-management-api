@@ -2,6 +2,7 @@ package users
 
 import (
 	"context"
+	"errors"
 	"testing"
 	"time"
 
@@ -110,6 +111,12 @@ func TestUserRepository_FindByUsername(t *testing.T) {
 	})
 }
 
+func TestGetDBModels(t *testing.T) {
+	models := GetDBModels()
+	assert.Len(t, models, 1)
+	assert.IsType(t, &userDB{}, models[0])
+}
+
 func TestUserRepository_InsertNewUser(t *testing.T) {
 	user := &User{
 		ID:       uuid.New(),
@@ -129,6 +136,32 @@ func TestUserRepository_InsertNewUser(t *testing.T) {
 		id, err := repo.InsertNewUser(context.Background(), user)
 		assert.NoError(t, err)
 		assert.Equal(t, user.ID, id)
+	})
+
+	t.Run("duplicate_email", func(t *testing.T) {
+		gormDB, mock := setupUserMockDB(t)
+		repo := NewRepository(gormDB)
+
+		mock.ExpectBegin()
+		mock.ExpectExec("INSERT").
+			WillReturnError(errors.New("duplicate key value violates unique constraint \"users_email_key\""))
+		mock.ExpectRollback()
+
+		_, err := repo.InsertNewUser(context.Background(), user)
+		assert.ErrorIs(t, err, ErrEmailAlreadyExists)
+	})
+
+	t.Run("duplicate_username", func(t *testing.T) {
+		gormDB, mock := setupUserMockDB(t)
+		repo := NewRepository(gormDB)
+
+		mock.ExpectBegin()
+		mock.ExpectExec("INSERT").
+			WillReturnError(errors.New("duplicate key value violates unique constraint \"users_username_key\""))
+		mock.ExpectRollback()
+
+		_, err := repo.InsertNewUser(context.Background(), user)
+		assert.ErrorIs(t, err, ErrUsernameExists)
 	})
 
 	t.Run("db_error", func(t *testing.T) {
@@ -172,6 +205,18 @@ func TestUserRepository_GetUserByUserID(t *testing.T) {
 
 		user, err := repo.GetUserByUserID(context.Background(), userID)
 		assert.NoError(t, err)
+		assert.Nil(t, user)
+	})
+
+	t.Run("relation_error", func(t *testing.T) {
+		gormDB, mock := setupUserMockDB(t)
+		repo := NewRepository(gormDB)
+
+		mock.ExpectQuery("SELECT").
+			WillReturnError(errors.New("relation \"users\" does not exist"))
+
+		user, err := repo.GetUserByUserID(context.Background(), userID)
+		assert.ErrorIs(t, err, ErrInternalDatabase)
 		assert.Nil(t, user)
 	})
 

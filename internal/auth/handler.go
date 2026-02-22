@@ -2,6 +2,7 @@ package auth
 
 import (
 	"errors"
+	"github.com/adriannbhp/kartala-golang-task-management-api/internal/users"
 	"github.com/adriannbhp/kartala-golang-task-management-api/pkg/logger"
 	"github.com/adriannbhp/kartala-golang-task-management-api/pkg/response"
 	"net/http"
@@ -39,13 +40,27 @@ func (h *Handler) Register(c *gin.Context) {
 		return
 	}
 
+	if err := param.Validate(); err != nil {
+		response.ValidationError(c, http.StatusBadRequest, response.ErrInvalidRequest, err)
+		return
+	}
+
 	user, err := h.authUsecase.Register(c.Request.Context(), &param)
 	if err != nil {
+		// Log the original error for debugging
 		logger.Logger.Errorf("Failed to register user: %v", err)
+		
+		// Map domain errors to appropriate HTTP status and friendly messages
 		if errors.Is(err, ErrEmailAlreadyExists) || errors.Is(err, ErrUsernameExists) {
 			response.Error(c, http.StatusConflict, err.Error())
 			return
 		}
+		
+		if errors.Is(err, users.ErrInternalDatabase) {
+			response.Error(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		
 		response.Error(c, http.StatusInternalServerError, response.ErrInternalServer)
 		return
 	}
@@ -71,13 +86,26 @@ func (h *Handler) Login(c *gin.Context) {
 		return
 	}
 
+	if err := param.Validate(); err != nil {
+		response.ValidationError(c, http.StatusBadRequest, response.ErrInvalidRequest, err)
+		return
+	}
+
 	accessToken, refreshToken, user, err := h.authUsecase.Login(c.Request.Context(), &param)
 	if err != nil {
+		// Log the original error for debugging
 		logger.Logger.Errorf("Login failed: %v", err)
+		
 		if errors.Is(err, ErrUserNotFound) || errors.Is(err, ErrInvalidPassword) {
 			response.Error(c, http.StatusUnauthorized, response.ErrInvalidCredentials)
 			return
 		}
+		
+		if errors.Is(err, users.ErrInternalDatabase) {
+			response.Error(c, http.StatusInternalServerError, err.Error())
+			return
+		}
+		
 		response.Error(c, http.StatusInternalServerError, response.ErrInternalServer)
 		return
 	}

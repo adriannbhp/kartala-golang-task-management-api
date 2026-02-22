@@ -14,8 +14,9 @@ type Meta struct {
 
 // JSONResponse defines the standardized structure for all API responses
 type JSONResponse struct {
-	Meta Meta        `json:"meta"`
-	Data interface{} `json:"data,omitempty"`
+	Meta   Meta        `json:"meta"`
+	Data   interface{} `json:"data,omitempty"`
+	Errors interface{} `json:"errors,omitempty"`
 }
 
 // Success sends a standardized success response
@@ -65,6 +66,18 @@ func AbortWithError(c *gin.Context, code int, message string) {
 	})
 }
 
+// ValidationError sends a standardized validation error response
+func ValidationError(c *gin.Context, code int, message string, errors interface{}) {
+	c.AbortWithStatusJSON(code, JSONResponse{
+		Meta: Meta{
+			Message: message,
+			Code:    code,
+			Status:  "error",
+		},
+		Errors: errors,
+	})
+}
+
 // --- Swagger Documentation Models ---
 // These models are used ONLY for Swagger documentation to show accurate examples
 
@@ -74,7 +87,7 @@ func AbortWithError(c *gin.Context, code int, message string) {
 // SwaggerLoginResponse represents a concrete login response
 type SwaggerLoginResponse struct {
 	Meta struct {
-		Message string `json:"message" example:"Login berhasil, selamat datang kembali"`
+		Message string `json:"message" example:"Login successful"`
 		Code    int    `json:"code" example:"200"`
 		Status  string `json:"status" example:"success"`
 	} `json:"meta"`
@@ -84,7 +97,7 @@ type SwaggerLoginResponse struct {
 // SwaggerRegisterResponse represents a concrete registration response
 type SwaggerRegisterResponse struct {
 	Meta struct {
-		Message string `json:"message" example:"Registrasi akun berhasil"`
+		Message string `json:"message" example:"Registration successful"`
 		Code    int    `json:"code" example:"201"`
 		Status  string `json:"status" example:"success"`
 	} `json:"meta"`
@@ -93,7 +106,7 @@ type SwaggerRegisterResponse struct {
 // SwaggerUserMeResponse represents a concrete user info response
 type SwaggerUserMeResponse struct {
 	Meta struct {
-		Message string `json:"message" example:"Data berhasil dimuat"`
+		Message string `json:"message" example:"Data fetched successfully"`
 		Code    int    `json:"code" example:"200"`
 		Status  string `json:"status" example:"success"`
 	} `json:"meta"`
@@ -103,7 +116,7 @@ type SwaggerUserMeResponse struct {
 // SwaggerTaskResponse represents a concrete single task response
 type SwaggerTaskResponse struct {
 	Meta struct {
-		Message string `json:"message" example:"Data berhasil dimuat"`
+		Message string `json:"message" example:"Data fetched successfully"`
 		Code    int    `json:"code" example:"200"`
 		Status  string `json:"status" example:"success"`
 	} `json:"meta"`
@@ -113,7 +126,7 @@ type SwaggerTaskResponse struct {
 // SwaggerTasksPaginationResponse represents a concrete paginated tasks response
 type SwaggerTasksPaginationResponse struct {
 	Meta struct {
-		Message    string `json:"message" example:"Data berhasil dimuat"`
+		Message    string `json:"message" example:"Data fetched successfully"`
 		Code       int    `json:"code" example:"200"`
 		Status     string `json:"status" example:"success"`
 		Pagination struct {
@@ -131,8 +144,8 @@ type SwaggerTasksPaginationResponse struct {
 // SwaggerTask represents a task structure for Swagger documentation
 type SwaggerTask struct {
 	ID          string `json:"id" example:"550e8400-e29b-41d4-a716-446655440000"`
-	Title       string `json:"title" example:"Belajar Swagger"`
-	Description string `json:"description" example:"Implementasi Swagger di Gin"`
+	Title       string `json:"title" example:"Learn Swagger"`
+	Description string `json:"description" example:"Implementing Swagger in Gin"`
 	Status      string `json:"status" example:"todo"`
 	UserID      string `json:"user_id" example:"550e8400-e29b-41d4-a716-446655440001"`
 	CreatedAt   string `json:"created_at" example:"2026-02-21T15:00:00Z"`
@@ -142,7 +155,7 @@ type SwaggerTask struct {
 // SwaggerDeleteResponse represents a concrete deletion response
 type SwaggerDeleteResponse struct {
 	Meta struct {
-		Message string `json:"message" example:"Data berhasil dihapus"`
+		Message string `json:"message" example:"Data deleted successfully"`
 		Code    int    `json:"code" example:"200"`
 		Status  string `json:"status" example:"success"`
 	} `json:"meta"`
@@ -151,16 +164,17 @@ type SwaggerDeleteResponse struct {
 // SwaggerBadRequestResponse represents a 400 Bad Request response documentation
 type SwaggerBadRequestResponse struct {
 	Meta struct {
-		Message string `json:"message" example:"Parameter permintaan tidak valid"`
+		Message string `json:"message" example:"Invalid request parameters"`
 		Code    int    `json:"code" example:"400"`
 		Status  string `json:"status" example:"error"`
 	} `json:"meta"`
+	Errors map[string]string `json:"errors" example:"email:must be a valid email address"`
 }
 
 // SwaggerUnauthorizedResponse represents a 401 Unauthorized response documentation
 type SwaggerUnauthorizedResponse struct {
 	Meta struct {
-		Message string `json:"message" example:"Sesi tidak valid atau telah berakhir"`
+		Message string `json:"message" example:"Invalid or expired session"`
 		Code    int    `json:"code" example:"401"`
 		Status  string `json:"status" example:"error"`
 	} `json:"meta"`
@@ -169,7 +183,7 @@ type SwaggerUnauthorizedResponse struct {
 // SwaggerNotFoundResponse represents a 404 Not Found response documentation
 type SwaggerNotFoundResponse struct {
 	Meta struct {
-		Message string `json:"message" example:"Data yang Anda cari tidak ditemukan"`
+		Message string `json:"message" example:"Resource not found"`
 		Code    int    `json:"code" example:"404"`
 		Status  string `json:"status" example:"error"`
 	} `json:"meta"`
@@ -178,7 +192,7 @@ type SwaggerNotFoundResponse struct {
 // SwaggerInternalErrorResponse represents a 500 Internal Server Error response documentation
 type SwaggerInternalErrorResponse struct {
 	Meta struct {
-		Message string `json:"message" example:"Terjadi gangguan pada server, silakan coba beberapa saat lagi"`
+		Message string `json:"message" example:"Internal server error, please try again later"`
 		Code    int    `json:"code" example:"500"`
 		Status  string `json:"status" example:"error"`
 	} `json:"meta"`

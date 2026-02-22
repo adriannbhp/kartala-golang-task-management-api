@@ -1,6 +1,6 @@
 # API Documentation: Kartala Task Management System
 
-Sistem manajemen tugas dengan autentikasi JWT dan arsitektur modular.
+Task management system with JWT authentication and modular architecture.
 
 ## Base URL
 `http://localhost:8080/api/v1`
@@ -8,50 +8,47 @@ Sistem manajemen tugas dengan autentikasi JWT dan arsitektur modular.
 ## Auth Endpoints
 
 ### 1. Register User
-Mendaftarkan akun baru.
+Register a new account.
 - **URL**: `/auth/register`
 - **Method**: `POST`
 - **Body**:
 ```json
 {
-  "name": "Jane Doe",
   "username": "janedoe",
   "email": "jane@example.com",
-  "password": "password123",
-  "confirm_password": "password123"
+  "password": "password123"
 }
 ```
 - **Responses**:
-  - `201 Created`: Registrasi berhasil.
-  - `400 Bad Request`: Validasi gagal atau internal error.
-  - `409 Conflict`: Email/username sudah terpakai.
+  - `201 Created`: Registration successful.
+  - `400 Bad Request`: Validation failure or invalid request.
+  - `409 Conflict`: Email or username already taken.
 
 ### 2. Login
-Mendapatkan token akses.
+Authenticate and get access tokens.
 - **URL**: `/auth/login`
 - **Method**: `POST`
 - **Body**:
 ```json
 {
-  "identifier": "janedoe", // bisa email atau username
-  "password": "password123",
-  "remember_me": false
+  "email": "jane@example.com",
+  "password": "password123"
 }
 ```
 - **Responses**:
-  - `200 OK`: Mengembalikan `access_token` dan `refresh_token`.
-  - `401 Unauthorized`: Kredensial salah.
+  - `200 OK`: Returns `access_token` and `refresh_token`.
+  - `401 Unauthorized`: Invalid email or password.
 
 ---
 
 ## Task Endpoints (Authenticated)
-Semua endpoint tugas memerlukan header: `Authorization: Bearer <access_token>`
+All task endpoints require header: `Authorization: Bearer <access_token>`
 
 ### 3. Get All Tasks
 - **URL**: `/tasks`
 - **Method**: `GET`
 - **Query Params**: `page`, `limit`, `title`, `status`
-- **Response**: List tugas milik user yang sedang aktif dengan metadata pagination.
+- **Response**: List of tasks belonging to the active user with pagination metadata.
 
 ### 4. Create Task
 - **URL**: `/tasks`
@@ -59,8 +56,8 @@ Semua endpoint tugas memerlukan header: `Authorization: Bearer <access_token>`
 - **Body**:
 ```json
 {
-  "title": "Belajar Go",
-  "description": "Mempelajari Goroutines dan Channels",
+  "title": "Learn Go",
+  "description": "Learning Goroutines and Channels",
   "status": "todo"
 }
 ```

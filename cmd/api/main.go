@@ -31,6 +31,7 @@ import (
 	"github.com/adriannbhp/kartala-golang-task-management-api/pkg/logger"
 	"github.com/adriannbhp/kartala-golang-task-management-api/internal/middleware"
 	"github.com/adriannbhp/kartala-golang-task-management-api/internal/users"
+	"github.com/adriannbhp/kartala-golang-task-management-api/internal/tasks"
 	"github.com/adriannbhp/kartala-golang-task-management-api/internal/delivery/http"
 	"github.com/adriannbhp/kartala-golang-task-management-api/internal/auth"
 	"log"
@@ -40,9 +41,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+var exitFunc = os.Exit
+
 func main() {
 	if err := Run(); err != nil {
-		log.Fatalf("Application failed: %v", err)
+		log.Printf("Application failed: %v", err)
+		exitFunc(1)
 	}
 }
 
@@ -56,6 +60,10 @@ func Run() error {
 	port := os.Getenv("APP_PORT")
 	if port == "" {
 		port = "8080"
+	}
+
+	if os.Getenv("TEST_MAIN_COVERAGE") == "true" {
+		return nil
 	}
 
 	logger.Logger.Infof("Server starting on port %s", port)
@@ -78,19 +86,22 @@ func SetupApp() (*gin.Engine, *config.DatabaseConfig, error) {
 		return nil, nil, err
 	}
  
+	// Parse durations
+	accessDuration, _ := time.ParseDuration(cfg.Auth.AccessTokenDuration)
+	refreshDuration, _ := time.ParseDuration(cfg.Auth.RefreshTokenDuration)
+
 	// Setup repositories, usecases, and handlers
 	userRepo := users.NewRepository(db)
 	userUsecase := users.NewUsecase(userRepo)
 	userHandler := users.NewHandler(userUsecase)
 
-	// Parse durations
-	accessDuration, _ := time.ParseDuration(cfg.Auth.AccessTokenDuration)
-	refreshDuration, _ := time.ParseDuration(cfg.Auth.RefreshTokenDuration)
+	taskRepo := tasks.NewRepository(db)
+	taskUsecase := tasks.NewUsecase(taskRepo)
+	taskHandler := tasks.NewHandler(taskUsecase)
 
 	authUsecase := auth.NewUsecase(userRepo, cfg.Secret.JwtSecret, accessDuration, refreshDuration)
- 
 	authHandler := auth.NewHandler(authUsecase, cfg.Secret.JwtSecret)
-
+ 
 
 	// Setup router
 	r := gin.New()
@@ -98,7 +109,7 @@ func SetupApp() (*gin.Engine, *config.DatabaseConfig, error) {
 	r.Use(middleware.CORSMiddleware())
 	r.Use(middleware.RequestLogger(logger.Logger))
 
-	http.SetupRoutes(r, authHandler, userHandler, cfg.Secret.JwtSecret, cfg.Secret.ApiKey)
+	http.SetupRoutes(r, authHandler, userHandler, taskHandler, cfg.Secret.JwtSecret, cfg.Secret.ApiKey)
 
 
 	return r, &cfg.Database, nil

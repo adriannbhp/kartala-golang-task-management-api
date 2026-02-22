@@ -3,6 +3,7 @@ package users
 import (
 	"context"
 	"errors"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -69,10 +70,7 @@ func (r *gormRepository) FindByEmail(ctx context.Context, email string) (*User, 
 	var model userDB
 	err := r.db.WithContext(ctx).Where("email = ?", email).First(&model).Error
 	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, nil
-		}
-		return nil, err
+		return nil, r.mapError(err)
 	}
 	return model.toDomain(), nil
 }
@@ -81,10 +79,7 @@ func (r *gormRepository) FindByUsername(ctx context.Context, username string) (*
 	var model userDB
 	err := r.db.WithContext(ctx).Where("username = ?", username).First(&model).Error
 	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, nil
-		}
-		return nil, err
+		return nil, r.mapError(err)
 	}
 	return model.toDomain(), nil
 }
@@ -93,7 +88,7 @@ func (r *gormRepository) InsertNewUser(ctx context.Context, user *User) (uuid.UU
 	model := fromDomain(user)
 	err := r.db.WithContext(ctx).Create(model).Error
 	if err != nil {
-		return uuid.Nil, err
+		return uuid.Nil, r.mapError(err)
 	}
 	return model.ID, nil
 }
@@ -102,10 +97,31 @@ func (r *gormRepository) GetUserByUserID(ctx context.Context, userID uuid.UUID) 
 	var model userDB
 	err := r.db.WithContext(ctx).Where("id = ?", userID).First(&model).Error
 	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, nil
-		}
-		return nil, err
+		return nil, r.mapError(err)
 	}
 	return model.toDomain(), nil
+}
+
+func (r *gormRepository) mapError(err error) error {
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil
+	}
+
+	errStr := err.Error()
+
+	// Map generic SQL errors or postgres specific errors to domain errors
+	if strings.Contains(errStr, "unique constraint") || strings.Contains(errStr, "duplicate key") {
+		if strings.Contains(errStr, "email") {
+			return ErrEmailAlreadyExists
+		}
+		if strings.Contains(errStr, "username") {
+			return ErrUsernameExists
+		}
+	}
+
+	if strings.Contains(errStr, "relation") && strings.Contains(errStr, "does not exist") {
+		return ErrInternalDatabase
+	}
+
+	return err
 }

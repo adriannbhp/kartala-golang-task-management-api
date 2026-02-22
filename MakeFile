@@ -25,7 +25,7 @@ migrate-up:
 
 migrate-up-atlas:
 	@echo "Running migrations using Atlas..."
-	@atlas migrate apply --env local --config "file://migrations/atlas.hcl"
+	@atlas migrate apply --env local --config "file://atlas.hcl" --revisions-schema public
 	@echo "Migrations completed"
 
 migrate-down:
@@ -37,6 +37,19 @@ migrate-gen:
 	@echo "Generating migration from ORM models using atlas.hcl..."
 	@powershell -Command "$$name = Read-Host 'Enter migration name'; atlas migrate diff $$name --env local --config \"file://migrations/atlas.hcl\""
 	@echo "Migration files generated in ./migrations"
+
+migrate-hash:
+	@echo "Re-hashing migration directory..."
+	@atlas migrate hash --env local --config "file://atlas.hcl"
+	@echo "✓ Migration checksum updated"
+
+migrate-status:
+	@echo "Checking migration status..."
+	@atlas migrate status --env local --config "file://atlas.hcl" --revisions-schema public
+
+migrate-baseline:
+	@powershell -Command "$$version = Read-Host 'Enter version to baseline'; atlas migrate apply --env local --config \"file://atlas.hcl\" --revisions-schema public --baseline $$version"
+	@echo "✓ Migration baseline established"
 
 migrate-version:
 	@migrate -path ./migrations -database "$(DB_URL_FINAL)" version
