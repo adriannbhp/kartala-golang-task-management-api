@@ -8,10 +8,12 @@ require (
 	ariga.io/atlas-provider-gorm v0.6.0
 	github.com/DATA-DOG/go-sqlmock v1.5.2
 	github.com/gin-gonic/gin v1.11.0
+	github.com/golang-jwt/jwt/v5 v5.2.3
 	github.com/google/uuid v1.6.0
 	github.com/joho/godotenv v1.5.1
 	github.com/sirupsen/logrus v1.9.4
 	github.com/stretchr/testify v1.11.1
+	golang.org/x/crypto v0.41.0
 	gorm.io/driver/postgres v1.6.0
 	gorm.io/gorm v1.31.1
 )
@@ -108,7 +110,6 @@ require (
 	go.opentelemetry.io/otel/trace v1.37.0 // indirect
 	go.uber.org/mock v0.5.0 // indirect
 	golang.org/x/arch v0.20.0 // indirect
-	golang.org/x/crypto v0.41.0 // indirect
 	golang.org/x/mod v0.27.0 // indirect
 	golang.org/x/net v0.43.0 // indirect
 	golang.org/x/oauth2 v0.30.0 // indirect

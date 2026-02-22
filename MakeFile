@@ -1,4 +1,4 @@
-.PHONY: migrate-up migrate-down migrate-create migrate-force migrate-version run build test test-unit test-integration test-coverage
+.PHONY: migrate-up migrate-down migrate-create migrate-force migrate-version dev run build test test-unit test-integration test-coverage
 
 ifneq (,$(wildcard ./.env))
     include .env
@@ -47,7 +47,11 @@ migrate-force:
 # Development commands
 run:
 	@echo "Starting application..."
-	@go run main.go
+	@go run cmd/api/main.go
+
+dev:
+	@echo "Starting application with Air for live reload..."
+	@air -c .air.toml
 
 seed:
 	@echo "Seeding database..."
@@ -56,7 +60,7 @@ seed:
 
 build:
 	@echo "Building application..."
-	@go build -o bin/ms-users-ancol.exe main.go
+	@go build -o bin/ms-users-ancol.exe cmd/api/main.go
 	@echo "✓ Build completed: bin/ms-users-ancol.exe"
 
 test:
@@ -107,6 +111,7 @@ help:
 	@echo "  make migrate-create   - Create new migration files"
 	@echo "  make migrate-version  - Show current migration version"
 	@echo "  make migrate-force    - Force migration to specific version"
+	@echo "  make dev              - Run application with live reload using Air"
 	@echo "  make run              - Run application"
 	@echo "  make build            - Build application binary"
 	@echo "  make test             - Run all tests"
