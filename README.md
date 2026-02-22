@@ -148,7 +148,4 @@ Jika terjadi rate limiting, Anda akan menerima response `429 Too Many Requests` 
 
 ---
 
-## 🤝 Kontribusi
-Kontribusi sangat terbuka! Silakan buka Issue atau kirimkan Pull Request.
-
-**© 2026 Kartala Task Management Team**
+**© 2026 Adrian Bimo Hernawan Pratama**
