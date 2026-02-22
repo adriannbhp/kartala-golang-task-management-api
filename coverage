@@ -1,0 +1,27 @@
+mode: set
+github.com/adriannbhp/kartala-golang-task-management-api/internal/config/config.go:44.35,46.78 1 1
+github.com/adriannbhp/kartala-golang-task-management-api/internal/config/config.go:46.78,49.17 2 1
+github.com/adriannbhp/kartala-golang-task-management-api/internal/config/config.go:49.17,53.31 3 1
+github.com/adriannbhp/kartala-golang-task-management-api/internal/config/config.go:53.31,54.47 1 1
+github.com/adriannbhp/kartala-golang-task-management-api/internal/config/config.go:54.47,57.11 3 1
+github.com/adriannbhp/kartala-golang-task-management-api/internal/config/config.go:60.4,60.15 1 1
+github.com/adriannbhp/kartala-golang-task-management-api/internal/config/config.go:60.15,62.5 1 1
+github.com/adriannbhp/kartala-golang-task-management-api/internal/config/config.go:63.9,65.4 1 1
+github.com/adriannbhp/kartala-golang-task-management-api/internal/config/config.go:68.2,91.32 2 1
+github.com/adriannbhp/kartala-golang-task-management-api/internal/config/config.go:91.32,92.79 1 1
+github.com/adriannbhp/kartala-golang-task-management-api/internal/config/config.go:92.79,94.4 1 1
+github.com/adriannbhp/kartala-golang-task-management-api/internal/config/config.go:94.9,96.4 1 1
+github.com/adriannbhp/kartala-golang-task-management-api/internal/config/config.go:99.2,99.29 1 1
+github.com/adriannbhp/kartala-golang-task-management-api/internal/config/config.go:99.29,100.79 1 1
+github.com/adriannbhp/kartala-golang-task-management-api/internal/config/config.go:100.79,102.4 1 1
+github.com/adriannbhp/kartala-golang-task-management-api/internal/config/config.go:102.9,104.4 1 1
+github.com/adriannbhp/kartala-golang-task-management-api/internal/config/config.go:108.2,109.21 2 1
+github.com/adriannbhp/kartala-golang-task-management-api/internal/config/config.go:109.21,111.17 2 1
+github.com/adriannbhp/kartala-golang-task-management-api/internal/config/config.go:111.17,113.4 1 1
+github.com/adriannbhp/kartala-golang-task-management-api/internal/config/config.go:113.9,117.18 3 1
+github.com/adriannbhp/kartala-golang-task-management-api/internal/config/config.go:117.18,119.5 1 0
+github.com/adriannbhp/kartala-golang-task-management-api/internal/config/config.go:119.10,122.5 2 1
+github.com/adriannbhp/kartala-golang-task-management-api/internal/config/config.go:126.2,126.17 1 1
+github.com/adriannbhp/kartala-golang-task-management-api/internal/config/config.go:129.46,130.42 1 1
+github.com/adriannbhp/kartala-golang-task-management-api/internal/config/config.go:130.42,132.3 1 1
+github.com/adriannbhp/kartala-golang-task-management-api/internal/config/config.go:133.2,133.21 1 1

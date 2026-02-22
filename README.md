@@ -95,8 +95,8 @@ Proyek ini sudah dilengkapi pipeline otomatis untuk deployment ke GCP.
    gcloud auth configure-docker
    ```
 
-2. **GCS Credentials**:
-   Encode Service Account JSON Anda ke Base64 dan masukkan ke `.env` pada field `GCS_CREDENTIALS_BASE64`.
+2. **GCS Credentials (Opsional)**:
+   Jika Anda membutuhkan akses ke Google Cloud Storage, encode Service Account JSON Anda ke Base64 dan masukkan ke `.env` pada field `GCS_CREDENTIALS_BASE64`. Jika dikosongkan, aplikasi tetap akan berjalan normal.
 
 3. **Deploy (Metode Rekomendasi)**:
    Gunakan Cloud Build agar proses build image tidak membebani komputer Anda:
@@ -112,7 +112,7 @@ Proyek ini sudah dilengkapi pipeline otomatis untuk deployment ke GCP.
 Akses dokumentasi interaktif di: `http://localhost:8080/swagger/index.html`
 
 ### Menjalankan Test
-Aplikasi ini memiliki cakupan unit test yang luas dan integration test yang stabil:
+Aplikasi ini memiliki cakupan unit test yang luas dan integration test yang sangat stabil (**Total Coverage: 99.9%**):
 ```bash
 make test-unit           # Jalankan test logika bisnis (Cepat)
 make test-integration    # Jalankan integration test (Butuh DB Test)

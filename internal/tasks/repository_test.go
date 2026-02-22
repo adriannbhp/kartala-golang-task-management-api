@@ -67,6 +67,34 @@ func TestTaskRepository_FindAllByUserID(t *testing.T) {
 		_, _, err := repo.FindAllByUserID(context.Background(), userID, &SearchTaskParameter{})
 		assert.Error(t, err)
 	})
+
+	t.Run("sorting_branches", func(t *testing.T) {
+		testCases := []struct {
+			name     string
+			sort     string
+			expected string
+		}{
+			{"empty_sort", "", "ORDER BY created_at desc"},
+			{"only_asc", "asc", "ORDER BY created_at asc"},
+			{"only_desc", "desc", "ORDER BY created_at desc"},
+			{"custom_sort", "title asc", "ORDER BY title asc"},
+		}
+
+		for _, tc := range testCases {
+			t.Run(tc.name, func(t *testing.T) {
+				param := &SearchTaskParameter{
+					Pagination: pagination.PaginationParameter{Page: 1, Limit: 10, Sort: tc.sort},
+				}
+
+				mock.ExpectQuery("count").WillReturnRows(sqlmock.NewRows([]string{"count"}).AddRow(1))
+				// We match the ORDER BY clause in the expected query
+				mock.ExpectQuery(tc.expected).WillReturnRows(sqlmock.NewRows([]string{"id", "title"}).AddRow(uuid.New(), "Task A"))
+
+				_, _, err := repo.FindAllByUserID(context.Background(), userID, param)
+				assert.NoError(t, err)
+			})
+		}
+	})
 }
 
 func TestTaskRepository_FindByID(t *testing.T) {

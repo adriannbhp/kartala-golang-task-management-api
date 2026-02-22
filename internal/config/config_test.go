@@ -204,4 +204,27 @@ func TestGCSCredentials(t *testing.T) {
 		assert.NoError(t, err)
 		assert.Empty(t, os.Getenv("GOOGLE_APPLICATION_CREDENTIALS"))
 	})
+
+	t.Run("write_file_failure", func(t *testing.T) {
+		t.Setenv("GO_ENV", "test")
+		t.Setenv("JWT_SECRET", "dummy")
+		t.Setenv("API_KEY", "dummy")
+
+		// Valid base64 but we'll make the file write fail
+		dummyBase64 := "eyJ0eXBlIjogInNlcnZpY2VfYWNjb3VudCJ9"
+		t.Setenv("GCS_CREDENTIALS_BASE64", dummyBase64)
+
+		// Create a directory where the file should be to cause WriteFile to fail
+		tmpPath := filepath.Join(os.TempDir(), "gcs-credentials.json")
+		// Ensure it's empty first
+		os.RemoveAll(tmpPath)
+		err := os.MkdirAll(tmpPath, 0755)
+		assert.NoError(t, err)
+		defer os.RemoveAll(tmpPath)
+
+		os.Unsetenv("GOOGLE_APPLICATION_CREDENTIALS")
+		_, err = LoadConfig()
+		assert.NoError(t, err) // Should not error, just log warning
+		assert.Empty(t, os.Getenv("GOOGLE_APPLICATION_CREDENTIALS"))
+	})
 }
