@@ -19,6 +19,17 @@ func NewHandler(userUsecase Usecase) *Handler {
 }
 
 // GetUserInfo handles getting the current user's information
+// @Summary Get current user info
+// @Description Get profile information for the authenticated user
+// @Tags users
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Security BearerAuth
+// @Success 200 {object} response.SwaggerUserMeResponse "User info retrieved successfully"
+// @Failure 401 {object} response.SwaggerUnauthorizedResponse "Unauthorized"
+// @Failure 404 {object} response.SwaggerNotFoundResponse "User not found"
+// @Router /api/v1/users/me [get]
 func (h *Handler) GetUserInfo(c *gin.Context) {
 	userIDStr, exists := c.Get("user_id")
 	if !exists {

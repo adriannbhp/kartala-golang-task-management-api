@@ -19,7 +19,6 @@ func TestNewUser(t *testing.T) {
 		assert.Equal(t, username, u.Username)
 		assert.Equal(t, email, u.Email)
 		assert.Equal(t, password, u.Password)
-		assert.Equal(t, RoleUser, u.Role)
 		assert.False(t, u.CreatedAt.IsZero())
 		assert.False(t, u.UpdatedAt.IsZero())
 		assert.Equal(t, u.CreatedAt, u.UpdatedAt)

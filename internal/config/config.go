@@ -12,6 +12,7 @@ type Config struct {
 	App      AppConfig
 	Database DatabaseConfig
 	Secret   SecretConfig
+	Auth     AuthConfig
 }
 
 type AppConfig struct {
@@ -30,6 +31,11 @@ type DatabaseConfig struct {
 type SecretConfig struct {
 	JwtSecret string
 	ApiKey    string
+}
+
+type AuthConfig struct {
+	AccessTokenDuration  string
+	RefreshTokenDuration string
 }
 
 func LoadConfig() (Config, error) {
@@ -71,6 +77,10 @@ func LoadConfig() (Config, error) {
 		Secret: SecretConfig{
 			JwtSecret: getEnv("JWT_SECRET", ""),
 			ApiKey:    getEnv("API_KEY", ""),
+		},
+		Auth: AuthConfig{
+			AccessTokenDuration:  getEnv("ACCESS_TOKEN_DURATION", "15m"),
+			RefreshTokenDuration: getEnv("REFRESH_TOKEN_DURATION", "168h"),
 		},
 	}
 

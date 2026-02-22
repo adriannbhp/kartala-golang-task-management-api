@@ -31,7 +31,6 @@ type userDB struct {
 	Username  string    `gorm:"type:varchar(100);uniqueIndex"`
 	Email     string    `gorm:"type:varchar(255);uniqueIndex"`
 	Password  string    `gorm:"type:varchar(255)"`
-	Role      string    `gorm:"type:varchar(50);default:'user'"`
 	CreatedAt time.Time `gorm:"autoCreateTime"`
 	UpdatedAt time.Time `gorm:"autoUpdateTime"`
 }
@@ -46,7 +45,6 @@ func (m *userDB) toDomain() *User {
 		Username:  m.Username,
 		Email:     m.Email,
 		Password:  m.Password,
-		Role:      m.Role,
 		CreatedAt: m.CreatedAt,
 		UpdatedAt: m.UpdatedAt,
 	}
@@ -58,7 +56,6 @@ func fromDomain(u *User) *userDB {
 		Username:  u.Username,
 		Email:     u.Email,
 		Password:  u.Password,
-		Role:      u.Role,
 		CreatedAt: u.CreatedAt,
 		UpdatedAt: u.UpdatedAt,
 	}

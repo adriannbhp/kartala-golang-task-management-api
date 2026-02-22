@@ -43,6 +43,11 @@ migrate-version:
 
 migrate-force:
 	@powershell -Command "$$version = Read-Host 'Enter version to force'; migrate -path ./migrations -database \"$(DB_URL_FINAL)\" force $$version"
+ 
+swagger-gen:
+	@echo "Generating Swagger documentation..."
+	@go run -mod=mod github.com/swaggo/swag/cmd/swag@latest init -g cmd/api/main.go -o docs --parseDependency --parseInternal
+	@echo "✓ Swagger documentation generated in ./docs"
 
 # Development commands
 run:
@@ -60,8 +65,8 @@ seed:
 
 build:
 	@echo "Building application..."
-	@go build -o bin/ms-users-ancol.exe cmd/api/main.go
-	@echo "✓ Build completed: bin/ms-users-ancol.exe"
+	@go build -o bin/kartala-api.exe cmd/api/main.go
+	@echo "✓ Build completed: bin/kartala-api.exe"
 
 test:
 	@echo "Running all tests..."

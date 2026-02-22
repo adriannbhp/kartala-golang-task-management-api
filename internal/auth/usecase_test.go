@@ -43,14 +43,13 @@ func TestAuthUsecase_Register(t *testing.T) {
 	mockRepo := users.NewMockUserRepository()
 	mockTokens := &MockTokenProvider{}
 	mockHasher := &MockPasswordHasher{}
-	uc := NewTestUsecase(mockRepo, "secret", mockTokens, mockHasher)
+	uc := NewTestUsecase(mockRepo, "secret", mockTokens, mockHasher, time.Minute, time.Hour)
 
 	t.Run("success", func(t *testing.T) {
 		param := &RegisterParameter{
-			Username:        "testuser",
-			Email:           "test@example.com",
-			Password:        "password123",
-			ConfirmPassword: "password123",
+			Username: "testuser",
+			Email:    "test@example.com",
+			Password: "password123",
 		}
 
 		mockRepo.FindByEmailFunc = func(ctx context.Context, email string) (*users.User, error) { return nil, nil }
@@ -74,7 +73,7 @@ func TestAuthUsecase_Register(t *testing.T) {
 	})
 
 	t.Run("username_exists", func(t *testing.T) {
-		param := &RegisterParameter{Username: "exists", Password: "p", ConfirmPassword: "p"}
+		param := &RegisterParameter{Username: "exists", Password: "p"}
 		mockRepo.FindByEmailFunc = func(ctx context.Context, email string) (*users.User, error) { return nil, nil }
 		mockRepo.FindByUsernameFunc = func(ctx context.Context, username string) (*users.User, error) {
 			return &users.User{Username: username}, nil
@@ -83,14 +82,9 @@ func TestAuthUsecase_Register(t *testing.T) {
 		assert.ErrorIs(t, err, ErrUsernameExists)
 	})
 
-	t.Run("password_mismatch", func(t *testing.T) {
-		param := &RegisterParameter{Password: "p1", ConfirmPassword: "p2"}
-		_, err := uc.Register(context.Background(), param)
-		assert.ErrorIs(t, err, ErrPasswordMismatch)
-	})
 
 	t.Run("repository_error", func(t *testing.T) {
-		param := &RegisterParameter{Email: "error@e.com", Password: "p", ConfirmPassword: "p"}
+		param := &RegisterParameter{Email: "error@e.com", Password: "p"}
 		mockRepo.FindByEmailFunc = func(ctx context.Context, email string) (*users.User, error) {
 			return nil, fmt.Errorf("db error")
 		}
@@ -99,7 +93,7 @@ func TestAuthUsecase_Register(t *testing.T) {
 	})
 
 	t.Run("check_username_error", func(t *testing.T) {
-		param := &RegisterParameter{Username: "u", Email: "e", Password: "p", ConfirmPassword: "p"}
+		param := &RegisterParameter{Username: "u", Email: "e", Password: "p"}
 		mockRepo.FindByEmailFunc = func(ctx context.Context, email string) (*users.User, error) { return nil, nil }
 		mockRepo.FindByUsernameFunc = func(ctx context.Context, username string) (*users.User, error) {
 			return nil, assert.AnError
@@ -109,7 +103,7 @@ func TestAuthUsecase_Register(t *testing.T) {
 	})
 
 	t.Run("hash_error", func(t *testing.T) {
-		param := &RegisterParameter{Username: "u", Email: "e", Password: "p", ConfirmPassword: "p"}
+		param := &RegisterParameter{Username: "u", Email: "e", Password: "p"}
 		mockRepo.FindByEmailFunc = func(ctx context.Context, email string) (*users.User, error) { return nil, nil }
 		mockRepo.FindByUsernameFunc = func(ctx context.Context, username string) (*users.User, error) { return nil, nil }
 		mockHasher.HashPasswordFunc = func(p string) (string, error) { return "", assert.AnError }
@@ -118,7 +112,7 @@ func TestAuthUsecase_Register(t *testing.T) {
 	})
 
 	t.Run("insert_error", func(t *testing.T) {
-		param := &RegisterParameter{Username: "u", Email: "e", Password: "p", ConfirmPassword: "p"}
+		param := &RegisterParameter{Username: "u", Email: "e", Password: "p"}
 		mockRepo.FindByEmailFunc = func(ctx context.Context, email string) (*users.User, error) { return nil, nil }
 		mockRepo.FindByUsernameFunc = func(ctx context.Context, username string) (*users.User, error) { return nil, nil }
 		mockHasher.HashPasswordFunc = func(p string) (string, error) { return "h", nil }
@@ -134,7 +128,7 @@ func TestAuthUsecase_Login(t *testing.T) {
 	mockRepo := users.NewMockUserRepository()
 	mockTokens := &MockTokenProvider{}
 	mockHasher := &MockPasswordHasher{}
-	uc := NewTestUsecase(mockRepo, "secret", mockTokens, mockHasher)
+	uc := NewTestUsecase(mockRepo, "secret", mockTokens, mockHasher, time.Minute, time.Hour)
 
 	t.Run("success_by_email", func(t *testing.T) {
 		mockRepo.FindByEmailFunc = func(ctx context.Context, email string) (*users.User, error) {
@@ -144,74 +138,37 @@ func TestAuthUsecase_Login(t *testing.T) {
 		mockTokens.GenerateAccessTokenFunc = func(u uuid.UUID, s string, d time.Duration) (string, error) { return "at", nil }
 		mockTokens.GenerateRefreshTokenFunc = func(u uuid.UUID, s string, d time.Duration) (string, error) { return "rt", nil }
 
-		accessToken, _, _, err := uc.Login(context.Background(), &LoginParameter{Identifier: "test@e.com", Password: "p"})
+		accessToken, _, _, err := uc.Login(context.Background(), &LoginParameter{Email: "test@e.com", Password: "p"})
 		assert.NoError(t, err)
 		assert.Equal(t, "at", accessToken)
-	})
-
-	t.Run("success_by_username", func(t *testing.T) {
-		mockRepo.FindByEmailFunc = func(ctx context.Context, email string) (*users.User, error) { return nil, nil }
-		mockRepo.FindByUsernameFunc = func(ctx context.Context, username string) (*users.User, error) {
-			return &users.User{ID: uuid.New(), Username: username, Password: "h"}, nil
-		}
-		mockHasher.CheckPasswordHashFunc = func(p, h string) (bool, error) { return true, nil }
-		mockTokens.GenerateAccessTokenFunc = func(u uuid.UUID, s string, d time.Duration) (string, error) { return "at", nil }
-		mockTokens.GenerateRefreshTokenFunc = func(u uuid.UUID, s string, d time.Duration) (string, error) { return "rt", nil }
-
-		_, _, _, err := uc.Login(context.Background(), &LoginParameter{Identifier: "user", Password: "p"})
-		assert.NoError(t, err)
-	})
-
-	t.Run("remember_me", func(t *testing.T) {
-		mockRepo.FindByEmailFunc = func(ctx context.Context, email string) (*users.User, error) {
-			return &users.User{ID: uuid.New()}, nil
-		}
-		mockHasher.CheckPasswordHashFunc = func(p, h string) (bool, error) { return true, nil }
-		mockTokens.GenerateAccessTokenFunc = func(u uuid.UUID, s string, d time.Duration) (string, error) { return "at", nil }
-		mockTokens.GenerateRefreshTokenFunc = func(u uuid.UUID, s string, d time.Duration) (string, error) {
-			if d == RefreshTokenDurationLong {
-				return "long-rt", nil
-			}
-			return "short-rt", nil
-		}
-
-		_, rt, _, err := uc.Login(context.Background(), &LoginParameter{Identifier: "e", Password: "p", RememberMe: true})
-		assert.NoError(t, err)
-		assert.Equal(t, "long-rt", rt)
 	})
 
 	t.Run("user_not_found", func(t *testing.T) {
 		mockRepo.FindByEmailFunc = func(ctx context.Context, email string) (*users.User, error) { return nil, nil }
 		mockRepo.FindByUsernameFunc = func(ctx context.Context, username string) (*users.User, error) { return nil, nil }
-		_, _, _, err := uc.Login(context.Background(), &LoginParameter{Identifier: "n", Password: "p"})
+		_, _, _, err := uc.Login(context.Background(), &LoginParameter{Email: "n@example.com", Password: "p"})
 		assert.ErrorIs(t, err, ErrUserNotFound)
 	})
 
 	t.Run("invalid_password", func(t *testing.T) {
 		mockRepo.FindByEmailFunc = func(ctx context.Context, email string) (*users.User, error) { return &users.User{}, nil }
 		mockHasher.CheckPasswordHashFunc = func(p, h string) (bool, error) { return false, nil }
-		_, _, _, err := uc.Login(context.Background(), &LoginParameter{Identifier: "e", Password: "w"})
+		_, _, _, err := uc.Login(context.Background(), &LoginParameter{Email: "e@example.com", Password: "w"})
 		assert.ErrorIs(t, err, ErrInvalidPassword)
 	})
 
 	t.Run("db_error_email", func(t *testing.T) {
 		mockRepo.FindByEmailFunc = func(ctx context.Context, email string) (*users.User, error) { return nil, assert.AnError }
-		_, _, _, err := uc.Login(context.Background(), &LoginParameter{Identifier: "e", Password: "p"})
+		_, _, _, err := uc.Login(context.Background(), &LoginParameter{Email: "e@example.com", Password: "p"})
 		assert.Error(t, err)
 	})
 
-	t.Run("db_error_username", func(t *testing.T) {
-		mockRepo.FindByEmailFunc = func(ctx context.Context, email string) (*users.User, error) { return nil, nil }
-		mockRepo.FindByUsernameFunc = func(ctx context.Context, username string) (*users.User, error) { return nil, assert.AnError }
-		_, _, _, err := uc.Login(context.Background(), &LoginParameter{Identifier: "u", Password: "p"})
-		assert.Error(t, err)
-	})
 
 	t.Run("access_token_error", func(t *testing.T) {
 		mockRepo.FindByEmailFunc = func(ctx context.Context, email string) (*users.User, error) { return &users.User{}, nil }
 		mockHasher.CheckPasswordHashFunc = func(p, h string) (bool, error) { return true, nil }
 		mockTokens.GenerateAccessTokenFunc = func(u uuid.UUID, s string, d time.Duration) (string, error) { return "", assert.AnError }
-		_, _, _, err := uc.Login(context.Background(), &LoginParameter{Identifier: "e", Password: "p"})
+		_, _, _, err := uc.Login(context.Background(), &LoginParameter{Email: "e@example.com", Password: "p"})
 		assert.Error(t, err)
 	})
 
@@ -220,7 +177,7 @@ func TestAuthUsecase_Login(t *testing.T) {
 		mockHasher.CheckPasswordHashFunc = func(p, h string) (bool, error) { return true, nil }
 		mockTokens.GenerateAccessTokenFunc = func(u uuid.UUID, s string, d time.Duration) (string, error) { return "at", nil }
 		mockTokens.GenerateRefreshTokenFunc = func(u uuid.UUID, s string, d time.Duration) (string, error) { return "", assert.AnError }
-		_, _, _, err := uc.Login(context.Background(), &LoginParameter{Identifier: "e", Password: "p"})
+		_, _, _, err := uc.Login(context.Background(), &LoginParameter{Email: "e@example.com", Password: "p"})
 		assert.Error(t, err)
 	})
 }
@@ -229,7 +186,7 @@ func TestAuthUsecase_RefreshAccessToken(t *testing.T) {
 	mockRepo := users.NewMockUserRepository()
 	mockTokens := &MockTokenProvider{}
 	mockHasher := &MockPasswordHasher{}
-	uc := NewTestUsecase(mockRepo, "secret", mockTokens, mockHasher)
+	uc := NewTestUsecase(mockRepo, "secret", mockTokens, mockHasher, time.Minute, time.Hour)
 	userID := uuid.New()
 
 	t.Run("success", func(t *testing.T) {
@@ -298,7 +255,7 @@ func TestAuthUsecase_RefreshAccessToken(t *testing.T) {
 func TestUsecase_Defaults(t *testing.T) {
 	// This test is just to cover the default provider wrappers
 	repo := users.NewMockUserRepository()
-	uc := NewUsecase(repo, "secret")
+	uc := NewUsecase(repo, "secret", time.Minute, time.Hour)
 	assert.NotNil(t, uc)
 
 	tp := &defaultTokenProvider{}

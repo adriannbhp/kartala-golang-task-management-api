@@ -1,0 +1,300 @@
+basePath: /
+definitions:
+  github_com_adriannbhp_kartala-golang-task-management-api_pkg_response.SwaggerBadRequestResponse:
+    properties:
+      meta:
+        properties:
+          code:
+            example: 400
+            type: integer
+          message:
+            example: Parameter permintaan tidak valid
+            type: string
+          status:
+            example: error
+            type: string
+        type: object
+    type: object
+  github_com_adriannbhp_kartala-golang-task-management-api_pkg_response.SwaggerLoginResponse:
+    properties:
+      data:
+        $ref: '#/definitions/github_com_adriannbhp_kartala-golang-task-management-api_pkg_response.SwaggerLoginResponseData'
+      meta:
+        properties:
+          code:
+            example: 200
+            type: integer
+          message:
+            example: Login berhasil, selamat datang kembali
+            type: string
+          status:
+            example: success
+            type: string
+        type: object
+    type: object
+  github_com_adriannbhp_kartala-golang-task-management-api_pkg_response.SwaggerLoginResponseData:
+    properties:
+      access_token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        type: string
+      expires_in:
+        example: 900
+        type: integer
+      refresh_token:
+        example: def456...
+        type: string
+      token_type:
+        example: Bearer
+        type: string
+    type: object
+  github_com_adriannbhp_kartala-golang-task-management-api_pkg_response.SwaggerNotFoundResponse:
+    properties:
+      meta:
+        properties:
+          code:
+            example: 404
+            type: integer
+          message:
+            example: Data yang Anda cari tidak ditemukan
+            type: string
+          status:
+            example: error
+            type: string
+        type: object
+    type: object
+  github_com_adriannbhp_kartala-golang-task-management-api_pkg_response.SwaggerRegisterResponse:
+    properties:
+      meta:
+        properties:
+          code:
+            example: 201
+            type: integer
+          message:
+            example: Registrasi akun berhasil
+            type: string
+          status:
+            example: success
+            type: string
+        type: object
+    type: object
+  github_com_adriannbhp_kartala-golang-task-management-api_pkg_response.SwaggerUnauthorizedResponse:
+    properties:
+      meta:
+        properties:
+          code:
+            example: 401
+            type: integer
+          message:
+            example: Sesi tidak valid atau telah berakhir
+            type: string
+          status:
+            example: error
+            type: string
+        type: object
+    type: object
+  github_com_adriannbhp_kartala-golang-task-management-api_pkg_response.SwaggerUserMeResponse:
+    properties:
+      data:
+        $ref: '#/definitions/github_com_adriannbhp_kartala-golang-task-management-api_pkg_response.SwaggerUserMeResponseData'
+      meta:
+        properties:
+          code:
+            example: 200
+            type: integer
+          message:
+            example: Data berhasil dimuat
+            type: string
+          status:
+            example: success
+            type: string
+        type: object
+    type: object
+  github_com_adriannbhp_kartala-golang-task-management-api_pkg_response.SwaggerUserMeResponseData:
+    properties:
+      email:
+        example: john@example.com
+        type: string
+      name:
+        example: John Doe
+        type: string
+      username:
+        example: johndoe
+        type: string
+    type: object
+  internal_auth.LoginParameter:
+    properties:
+      email:
+        example: john@example.com
+        type: string
+      password:
+        example: password123
+        minLength: 8
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  internal_auth.RegisterParameter:
+    properties:
+      email:
+        example: john@example.com
+        type: string
+      password:
+        example: password123
+        maxLength: 100
+        minLength: 8
+        type: string
+      username:
+        example: johndoe
+        maxLength: 50
+        minLength: 3
+        type: string
+    required:
+    - email
+    - password
+    - username
+    type: object
+host: localhost:8081
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: API Server for Kartala Task Management API
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Kartala Task Management API
+  version: "1.0"
+paths:
+  /api/v1/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user and return JWT tokens
+      parameters:
+      - description: Login credentials
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_auth.LoginParameter'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Login successful
+          schema:
+            $ref: '#/definitions/github_com_adriannbhp_kartala-golang-task-management-api_pkg_response.SwaggerLoginResponse'
+        "400":
+          description: Invalid request
+          schema:
+            $ref: '#/definitions/github_com_adriannbhp_kartala-golang-task-management-api_pkg_response.SwaggerBadRequestResponse'
+        "401":
+          description: Invalid credentials
+          schema:
+            $ref: '#/definitions/github_com_adriannbhp_kartala-golang-task-management-api_pkg_response.SwaggerUnauthorizedResponse'
+      summary: Login user
+      tags:
+      - auth
+  /api/v1/auth/refresh:
+    post:
+      consumes:
+      - application/json
+      description: Get a new access token using a valid refresh token
+      parameters:
+      - description: Refresh token
+        in: body
+        name: request
+        required: true
+        schema:
+          properties:
+            refresh_token:
+              type: string
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Token refreshed successfully
+          schema:
+            $ref: '#/definitions/github_com_adriannbhp_kartala-golang-task-management-api_pkg_response.SwaggerLoginResponse'
+        "400":
+          description: Invalid request
+          schema:
+            $ref: '#/definitions/github_com_adriannbhp_kartala-golang-task-management-api_pkg_response.SwaggerBadRequestResponse'
+        "401":
+          description: Invalid or expired token
+          schema:
+            $ref: '#/definitions/github_com_adriannbhp_kartala-golang-task-management-api_pkg_response.SwaggerUnauthorizedResponse'
+      summary: Refresh access token
+      tags:
+      - auth
+  /api/v1/auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user account with username and email
+      parameters:
+      - description: Registration details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/internal_auth.RegisterParameter'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: User created successfully
+          schema:
+            $ref: '#/definitions/github_com_adriannbhp_kartala-golang-task-management-api_pkg_response.SwaggerRegisterResponse'
+        "400":
+          description: Invalid request
+          schema:
+            $ref: '#/definitions/github_com_adriannbhp_kartala-golang-task-management-api_pkg_response.SwaggerBadRequestResponse'
+        "409":
+          description: Conflict (Email or Username already exists)
+          schema:
+            $ref: '#/definitions/github_com_adriannbhp_kartala-golang-task-management-api_pkg_response.SwaggerBadRequestResponse'
+      summary: Register a new user
+      tags:
+      - auth
+  /api/v1/users/me:
+    get:
+      consumes:
+      - application/json
+      description: Get profile information for the authenticated user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User info retrieved successfully
+          schema:
+            $ref: '#/definitions/github_com_adriannbhp_kartala-golang-task-management-api_pkg_response.SwaggerUserMeResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/github_com_adriannbhp_kartala-golang-task-management-api_pkg_response.SwaggerUnauthorizedResponse'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/github_com_adriannbhp_kartala-golang-task-management-api_pkg_response.SwaggerNotFoundResponse'
+      security:
+      - ApiKeyAuth: []
+      - BearerAuth: []
+      summary: Get current user info
+      tags:
+      - users
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: X-API-KEY
+    type: apiKey
+  BearerAuth:
+    description: Type "Bearer" followed by a space and then your token.
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

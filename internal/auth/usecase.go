@@ -49,36 +49,38 @@ func (d *defaultPasswordHasher) CheckPasswordHash(password, hash string) (bool, 
 }
 
 type authUsecase struct {
-	userRepo   users.Repository
-	jwtSecret  string
-	tokens     TokenProvider
-	passHasher PasswordHasher
+	userRepo             users.Repository
+	jwtSecret            string
+	tokens               TokenProvider
+	passHasher           PasswordHasher
+	accessTokenDuration  time.Duration
+	refreshTokenDuration time.Duration
 }
 
-func NewUsecase(userRepo users.Repository, jwtSecret string) Usecase {
+func NewUsecase(userRepo users.Repository, jwtSecret string, accessDuration, refreshDuration time.Duration) Usecase {
 	return &authUsecase{
-		userRepo:   userRepo,
-		jwtSecret:  jwtSecret,
-		tokens:     &defaultTokenProvider{},
-		passHasher: &defaultPasswordHasher{},
+		userRepo:             userRepo,
+		jwtSecret:            jwtSecret,
+		tokens:               &defaultTokenProvider{},
+		passHasher:           &defaultPasswordHasher{},
+		accessTokenDuration:  accessDuration,
+		refreshTokenDuration: refreshDuration,
 	}
 }
 
 // Internal version for testing
-func NewTestUsecase(userRepo users.Repository, jwtSecret string, tokens TokenProvider, passHasher PasswordHasher) Usecase {
+func NewTestUsecase(userRepo users.Repository, jwtSecret string, tokens TokenProvider, passHasher PasswordHasher, accessDuration, refreshDuration time.Duration) Usecase {
 	return &authUsecase{
-		userRepo:   userRepo,
-		jwtSecret:  jwtSecret,
-		tokens:     tokens,
-		passHasher: passHasher,
+		userRepo:             userRepo,
+		jwtSecret:            jwtSecret,
+		tokens:               tokens,
+		passHasher:           passHasher,
+		accessTokenDuration:  accessDuration,
+		refreshTokenDuration: refreshDuration,
 	}
 }
 
 func (uc *authUsecase) Register(ctx context.Context, param *RegisterParameter) (*users.User, error) {
-	if param.Password != param.ConfirmPassword {
-		return nil, ErrPasswordMismatch
-	}
-
 	existingEmail, err := uc.userRepo.FindByEmail(ctx, param.Email)
 	if err != nil {
 		return nil, fmt.Errorf("check email usecase: %w", err)
@@ -101,9 +103,6 @@ func (uc *authUsecase) Register(ctx context.Context, param *RegisterParameter) (
 	}
 
 	user := users.NewUser(param.Username, param.Email, hashedPassword)
-	if param.Role != "" {
-		user.Role = param.Role
-	}
 
 	_, err = uc.userRepo.InsertNewUser(ctx, user)
 	if err != nil {
@@ -115,17 +114,9 @@ func (uc *authUsecase) Register(ctx context.Context, param *RegisterParameter) (
 
 func (uc *authUsecase) Login(ctx context.Context, param *LoginParameter) (string, string, *users.User, error) {
 	// Try finding by email first
-	user, err := uc.userRepo.FindByEmail(ctx, param.Identifier)
+	user, err := uc.userRepo.FindByEmail(ctx, param.Email)
 	if err != nil {
 		return "", "", nil, err
-	}
-
-	// If not found by email, try by username
-	if user == nil {
-		user, err = uc.userRepo.FindByUsername(ctx, param.Identifier)
-		if err != nil {
-			return "", "", nil, err
-		}
 	}
 
 	if user == nil {
@@ -138,18 +129,12 @@ func (uc *authUsecase) Login(ctx context.Context, param *LoginParameter) (string
 	}
 
 	// Generate tokens
-	accessToken, err := uc.tokens.GenerateAccessToken(user.ID, uc.jwtSecret, AccessTokenDuration)
+	accessToken, err := uc.tokens.GenerateAccessToken(user.ID, uc.jwtSecret, uc.accessTokenDuration)
 	if err != nil {
 		return "", "", nil, fmt.Errorf("failed to generate access token: %w", err)
 	}
 
-	// Refresh token duration based on remember me
-	refreshDuration := RefreshTokenDurationShort
-	if param.RememberMe {
-		refreshDuration = RefreshTokenDurationLong
-	}
-
-	refreshToken, err := uc.tokens.GenerateRefreshToken(user.ID, uc.jwtSecret, refreshDuration)
+	refreshToken, err := uc.tokens.GenerateRefreshToken(user.ID, uc.jwtSecret, uc.refreshTokenDuration)
 	if err != nil {
 		return "", "", nil, fmt.Errorf("failed to generate refresh token: %w", err)
 	}
@@ -180,7 +165,7 @@ func (uc *authUsecase) RefreshAccessToken(ctx context.Context, refreshToken stri
 	}
 
 	// Generate new access token
-	accessToken, err := uc.tokens.GenerateAccessToken(userID, jwtSecret, AccessTokenDuration)
+	accessToken, err := uc.tokens.GenerateAccessToken(userID, jwtSecret, uc.accessTokenDuration)
 	if err != nil {
 		return "", fmt.Errorf("failed to generate access token: %w", err)
 	}

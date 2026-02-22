@@ -34,8 +34,8 @@ func TestUserRepository_FindByEmail(t *testing.T) {
 		repo := NewRepository(gormDB)
 
 		mock.ExpectQuery("SELECT").
-			WillReturnRows(sqlmock.NewRows([]string{"id", "username", "email", "password", "role", "created_at", "updated_at"}).
-				AddRow(uuid.New(), "testuser", email, "secret", "user", time.Now(), time.Now()))
+			WillReturnRows(sqlmock.NewRows([]string{"id", "username", "email", "password", "created_at", "updated_at"}).
+				AddRow(uuid.New(), "testuser", email, "secret", time.Now(), time.Now()))
 
 		user, err := repo.FindByEmail(context.Background(), email)
 		assert.NoError(t, err)
@@ -76,8 +76,8 @@ func TestUserRepository_FindByUsername(t *testing.T) {
 		repo := NewRepository(gormDB)
 
 		mock.ExpectQuery("SELECT").
-			WillReturnRows(sqlmock.NewRows([]string{"id", "username", "email", "password", "role", "created_at", "updated_at"}).
-				AddRow(uuid.New(), username, "test@example.com", "secret", "user", time.Now(), time.Now()))
+			WillReturnRows(sqlmock.NewRows([]string{"id", "username", "email", "password", "created_at", "updated_at"}).
+				AddRow(uuid.New(), username, "test@example.com", "secret", time.Now(), time.Now()))
 
 		user, err := repo.FindByUsername(context.Background(), username)
 		assert.NoError(t, err)
@@ -154,8 +154,8 @@ func TestUserRepository_GetUserByUserID(t *testing.T) {
 		repo := NewRepository(gormDB)
 
 		mock.ExpectQuery("SELECT").
-			WillReturnRows(sqlmock.NewRows([]string{"id", "username", "email", "password", "role", "created_at", "updated_at"}).
-				AddRow(userID, "testuser", "test@example.com", "secret", "user", time.Now(), time.Now()))
+			WillReturnRows(sqlmock.NewRows([]string{"id", "username", "email", "password", "created_at", "updated_at"}).
+				AddRow(userID, "testuser", "test@example.com", "secret", time.Now(), time.Now()))
 
 		user, err := repo.GetUserByUserID(context.Background(), userID)
 		assert.NoError(t, err)

@@ -39,7 +39,7 @@ func TestHandler_Register(t *testing.T) {
 	router.POST("/register", handler.Register)
 
 	t.Run("success", func(t *testing.T) {
-		param := RegisterParameter{Username: "newuser", Email: "new@example.com", Password: "password123", ConfirmPassword: "password123"}
+		param := RegisterParameter{Username: "newuser", Email: "new@example.com", Password: "password123"}
 		body, _ := json.Marshal(param)
 
 		mockUsecase.RegisterFunc = func(ctx context.Context, p *RegisterParameter) (*users.User, error) {
@@ -56,7 +56,7 @@ func TestHandler_Register(t *testing.T) {
 	})
 
 	t.Run("conflict_email", func(t *testing.T) {
-		param := RegisterParameter{Username: "exists", Email: "exists@example.com", Password: "password123", ConfirmPassword: "password123"}
+		param := RegisterParameter{Username: "exists", Email: "exists@example.com", Password: "password123"}
 		body, _ := json.Marshal(param)
 		mockUsecase.RegisterFunc = func(ctx context.Context, p *RegisterParameter) (*users.User, error) {
 			return nil, ErrEmailAlreadyExists
@@ -69,7 +69,7 @@ func TestHandler_Register(t *testing.T) {
 	})
 
 	t.Run("conflict_username", func(t *testing.T) {
-		param := RegisterParameter{Username: "exists", Email: "e@e.com", Password: "password123", ConfirmPassword: "password123"}
+		param := RegisterParameter{Username: "exists", Email: "e@e.com", Password: "password123"}
 		body, _ := json.Marshal(param)
 		mockUsecase.RegisterFunc = func(ctx context.Context, p *RegisterParameter) (*users.User, error) {
 			return nil, ErrUsernameExists
@@ -81,18 +81,6 @@ func TestHandler_Register(t *testing.T) {
 		assert.Equal(t, http.StatusConflict, resp.Code)
 	})
 
-	t.Run("conflict_password_mismatch", func(t *testing.T) {
-		param := RegisterParameter{Username: "user", Email: "e@e.com", Password: "password123", ConfirmPassword: "password123"}
-		body, _ := json.Marshal(param)
-		mockUsecase.RegisterFunc = func(ctx context.Context, p *RegisterParameter) (*users.User, error) {
-			return nil, ErrPasswordMismatch
-		}
-		req := httptest.NewRequest(http.MethodPost, "/register", bytes.NewBuffer(body))
-		req.Header.Set("Content-Type", "application/json")
-		resp := httptest.NewRecorder()
-		router.ServeHTTP(resp, req)
-		assert.Equal(t, http.StatusConflict, resp.Code)
-	})
 
 	t.Run("invalid_request", func(t *testing.T) {
 		req := httptest.NewRequest(http.MethodPost, "/register", bytes.NewBufferString("invalid"))
@@ -102,7 +90,7 @@ func TestHandler_Register(t *testing.T) {
 	})
 
 	t.Run("internal_error", func(t *testing.T) {
-		param := RegisterParameter{Username: "err", Email: "err@example.com", Password: "password123", ConfirmPassword: "password123"}
+		param := RegisterParameter{Username: "err", Email: "err@example.com", Password: "password123"}
 		body, _ := json.Marshal(param)
 		mockUsecase.RegisterFunc = func(ctx context.Context, p *RegisterParameter) (*users.User, error) {
 			return nil, assert.AnError
@@ -124,7 +112,7 @@ func TestHandler_Login(t *testing.T) {
 	router.POST("/login", handler.Login)
 
 	t.Run("success", func(t *testing.T) {
-		param := LoginParameter{Identifier: "test", Password: "password123"}
+		param := LoginParameter{Email: "test@example.com", Password: "password123"}
 		body, _ := json.Marshal(param)
 		mockUsecase.LoginFunc = func(ctx context.Context, p *LoginParameter) (string, string, *users.User, error) {
 			return "at", "rt", &users.User{}, nil
@@ -137,7 +125,7 @@ func TestHandler_Login(t *testing.T) {
 	})
 
 	t.Run("unauthorized_password", func(t *testing.T) {
-		param := LoginParameter{Identifier: "test", Password: "wrongpassword"}
+		param := LoginParameter{Email: "test@example.com", Password: "wrongpassword"}
 		body, _ := json.Marshal(param)
 		mockUsecase.LoginFunc = func(ctx context.Context, p *LoginParameter) (string, string, *users.User, error) {
 			return "", "", nil, ErrInvalidPassword
@@ -150,7 +138,7 @@ func TestHandler_Login(t *testing.T) {
 	})
 
 	t.Run("unauthorized_user", func(t *testing.T) {
-		param := LoginParameter{Identifier: "notfound", Password: "password123"}
+		param := LoginParameter{Email: "notfound@example.com", Password: "password123"}
 		body, _ := json.Marshal(param)
 		mockUsecase.LoginFunc = func(ctx context.Context, p *LoginParameter) (string, string, *users.User, error) {
 			return "", "", nil, ErrUserNotFound
@@ -170,7 +158,7 @@ func TestHandler_Login(t *testing.T) {
 	})
 
 	t.Run("internal_error", func(t *testing.T) {
-		param := LoginParameter{Identifier: "test", Password: "password123"}
+		param := LoginParameter{Email: "test@example.com", Password: "password123"}
 		body, _ := json.Marshal(param)
 		mockUsecase.LoginFunc = func(ctx context.Context, p *LoginParameter) (string, string, *users.User, error) {
 			return "", "", nil, assert.AnError

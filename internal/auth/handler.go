@@ -22,6 +22,16 @@ func NewHandler(authUsecase Usecase, jwtSecret string) *Handler {
 }
 
 // Register handles user registration
+// @Summary Register a new user
+// @Description Create a new user account with username and email
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param request body RegisterParameter true "Registration details"
+// @Success 201 {object} response.SwaggerRegisterResponse "User created successfully"
+// @Failure 400 {object} response.SwaggerBadRequestResponse "Invalid request"
+// @Failure 409 {object} response.SwaggerBadRequestResponse "Conflict (Email or Username already exists)"
+// @Router /api/v1/auth/register [post]
 func (h *Handler) Register(c *gin.Context) {
 	var param RegisterParameter
 	if err := c.ShouldBindJSON(&param); err != nil {
@@ -32,7 +42,7 @@ func (h *Handler) Register(c *gin.Context) {
 	user, err := h.authUsecase.Register(c.Request.Context(), &param)
 	if err != nil {
 		logger.Logger.Errorf("Failed to register user: %v", err)
-		if errors.Is(err, ErrEmailAlreadyExists) || errors.Is(err, ErrUsernameExists) || errors.Is(err, ErrPasswordMismatch) {
+		if errors.Is(err, ErrEmailAlreadyExists) || errors.Is(err, ErrUsernameExists) {
 			response.Error(c, http.StatusConflict, err.Error())
 			return
 		}
@@ -44,6 +54,16 @@ func (h *Handler) Register(c *gin.Context) {
 }
 
 // Login handles user login
+// @Summary Login user
+// @Description Authenticate user and return JWT tokens
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param request body LoginParameter true "Login credentials"
+// @Success 200 {object} response.SwaggerLoginResponse "Login successful"
+// @Failure 400 {object} response.SwaggerBadRequestResponse "Invalid request"
+// @Failure 401 {object} response.SwaggerUnauthorizedResponse "Invalid credentials"
+// @Router /api/v1/auth/login [post]
 func (h *Handler) Login(c *gin.Context) {
 	var param LoginParameter
 	if err := c.ShouldBindJSON(&param); err != nil {
@@ -70,6 +90,16 @@ func (h *Handler) Login(c *gin.Context) {
 }
 
 // RefreshToken handles access token refreshing
+// @Summary Refresh access token
+// @Description Get a new access token using a valid refresh token
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param request body object{refresh_token=string} true "Refresh token"
+// @Success 200 {object} response.SwaggerLoginResponse "Token refreshed successfully"
+// @Failure 400 {object} response.SwaggerBadRequestResponse "Invalid request"
+// @Failure 401 {object} response.SwaggerUnauthorizedResponse "Invalid or expired token"
+// @Router /api/v1/auth/refresh [post]
 func (h *Handler) RefreshToken(c *gin.Context) {
 	var body struct {
 		RefreshToken string `json:"refresh_token" binding:"required"`
