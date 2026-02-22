@@ -1,0 +1,119 @@
+.PHONY: migrate-up migrate-down migrate-create migrate-force migrate-version run build test test-unit test-integration test-coverage
+
+ifneq (,$(wildcard ./.env))
+    include .env
+    export
+endif
+
+# Database URL for migrations
+DB_URL_FINAL := $(strip $(DB_URL))
+ifeq ($(DB_URL_FINAL),)
+    DB_URL_FINAL := postgresql://$(strip $(DB_USER)):$(strip $(DB_PASSWORD))@$(strip $(DB_HOST)):$(strip $(DB_PORT))/$(strip $(DB_NAME))?sslmode=$(strip $(DB_SSLMODE))
+endif
+
+# Dev Database URL (NeonDB) for Atlas comparison
+DB_DEV_URL_FINAL := $(strip $(DB_DEV_URL))
+ifeq ($(DB_DEV_URL_FINAL),)
+    DB_DEV_URL_FINAL := postgresql://$(strip $(DB_USER)):$(strip $(DB_PASSWORD))@$(strip $(DB_HOST)):$(strip $(DB_PORT))/$(strip $(DB_DEV_NAME))?sslmode=$(strip $(DB_SSLMODE))
+endif
+
+# Migration commands
+migrate-up:
+	@echo "Running migrations using golang-migrate..."
+	@migrate -path ./migrations -database "$(DB_URL_FINAL)" -verbose up
+	@echo "✓ Migrations completed"
+
+migrate-up-atlas:
+	@echo "Running migrations using Atlas..."
+	@atlas migrate apply --env local --config "file://migrations/atlas.hcl"
+	@echo "Migrations completed"
+
+migrate-down:
+	@echo "Rolling back migration..."
+	@migrate -path ./migrations -database "$(DB_URL_FINAL)" -verbose down 1
+	@echo "Rollback completed"
+
+migrate-gen:
+	@echo "Generating migration from ORM models using atlas.hcl..."
+	@powershell -Command "$$name = Read-Host 'Enter migration name'; atlas migrate diff $$name --env local --config \"file://migrations/atlas.hcl\""
+	@echo "Migration files generated in ./migrations"
+
+migrate-version:
+	@migrate -path ./migrations -database "$(DB_URL_FINAL)" version
+
+migrate-force:
+	@powershell -Command "$$version = Read-Host 'Enter version to force'; migrate -path ./migrations -database \"$(DB_URL_FINAL)\" force $$version"
+
+# Development commands
+run:
+	@echo "Starting application..."
+	@go run main.go
+
+seed:
+	@echo "Seeding database..."
+	@go run cmd/seeder/main.go
+	@echo "✓ Seeding completed"
+
+build:
+	@echo "Building application..."
+	@go build -o bin/ms-users-ancol.exe main.go
+	@echo "✓ Build completed: bin/ms-users-ancol.exe"
+
+test:
+	@echo "Running all tests..."
+	@set GO_ENV=test&& go test -v ./...
+
+test-unit:
+	@echo "Running unit tests (excluding integration)..."
+	@set GO_ENV=test&& go test -v -short ./...
+
+test-integration:
+	@echo "Running integration tests..."
+	@set GO_ENV=test&& go test -v ./tests/integration
+
+test-coverage:
+	@echo "Running tests with coverage..."
+	@set GO_ENV=test&& go test -v -coverprofile=coverage.out ./...
+	@go tool cover -func=coverage.out
+	@go tool cover -html=coverage.out -o coverage.html
+	@echo "✓ Coverage report generated: coverage.out and coverage.html"
+
+test-coverage-html: test-coverage
+	@echo "Opening coverage report..."
+	@start coverage.html
+
+test-all: test-unit test-integration
+
+# Vendor management
+vendor:
+	@echo "Updating vendor..."
+	@go mod tidy
+	@go mod vendor
+	@echo "✓ Vendor updated"
+
+# Clean
+clean:
+	@echo "Cleaning build artifacts..."
+	@if exist bin rmdir /s /q bin
+	@if exist coverage.out del /f coverage.out
+	@if exist coverage.html del /f coverage.html
+	@echo "✓ Clean completed"
+
+# Help
+help:
+	@echo "Available commands:"
+	@echo "  make migrate-up       - Apply all pending migrations"
+	@echo "  make migrate-down     - Rollback last migration"
+	@echo "  make migrate-create   - Create new migration files"
+	@echo "  make migrate-version  - Show current migration version"
+	@echo "  make migrate-force    - Force migration to specific version"
+	@echo "  make run              - Run application"
+	@echo "  make build            - Build application binary"
+	@echo "  make test             - Run all tests"
+	@echo "  make test-unit        - Run only unit tests (fast)"
+	@echo "  make test-integration - Run integration tests"
+	@echo "  make test-coverage    - Run tests and show coverage report"
+	@echo "  make test-coverage-html - Run tests and open HTML coverage report"
+	@echo "  make test-all         - Run unit and integration tests"
+	@echo "  make vendor           - Update vendor dependencies"
+	@echo "  make clean            - Clean build artifacts"
