@@ -1,0 +1,2592 @@
+{
+  "info": {
+    "_postman_id": "693c43ab-3c78-4f06-ba8a-c2659fbaa150",
+    "name": "Kartala - Junior Backend Engineer",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "24398161",
+    "_collection_link": "https://go.postman.co/collection/24398161-693c43ab-3c78-4f06-ba8a-c2659fbaa150?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Me",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/{{api}}/{{version}}/{{users}}/me",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "{{api}}",
+                "{{version}}",
+                "{{users}}",
+                "me"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "x-api-key",
+                    "value": "{{api_key}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{url}}/{{api}}/{{version}}/{{users}}/me",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "{{api}}",
+                    "{{version}}",
+                    "{{users}}",
+                    "me"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "access-control-allow-credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "access-control-allow-headers",
+                  "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With, X-API-KEY"
+                },
+                {
+                  "key": "access-control-allow-methods",
+                  "value": "POST, HEAD, PATCH, OPTIONS, GET, PUT, DELETE"
+                },
+                {
+                  "key": "access-control-allow-origin",
+                  "value": "*"
+                },
+                {
+                  "key": "content-security-policy",
+                  "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "referrer-policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "x-xss-protection",
+                  "value": "1; mode=block"
+                },
+                {
+                  "key": "x-cloud-trace-context",
+                  "value": "449cac353d3120e6b83073c88b843c1d;o=1"
+                },
+                {
+                  "key": "date",
+                  "value": "Sun, 22 Feb 2026 07:15:21 GMT"
+                },
+                {
+                  "key": "server",
+                  "value": "Google Frontend"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "266"
+                },
+                {
+                  "key": "Alt-Svc",
+                  "value": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"message\": \"Data retrieved successfully\",\n        \"code\": 200,\n        \"status\": \"success\"\n    },\n    \"data\": {\n        \"id\": \"f3512e13-ca05-4d8c-8f9a-e9c37fc608ff\",\n        \"username\": \"admin\",\n        \"email\": \"admin@example.com\",\n        \"created_at\": \"2026-02-22T05:10:49.446039Z\",\n        \"updated_at\": \"2026-02-22T05:10:49.446039Z\"\n    }\n}"
+            },
+            {
+              "name": "Invalid or Expired Token",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "x-api-key",
+                    "value": "{{api_key}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "url": {
+                  "raw": "{{url}}/{{api}}/{{version}}/{{users}}/me",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "{{api}}",
+                    "{{version}}",
+                    "{{users}}",
+                    "me"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "access-control-allow-credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "access-control-allow-headers",
+                  "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With, X-API-KEY"
+                },
+                {
+                  "key": "access-control-allow-methods",
+                  "value": "POST, HEAD, PATCH, OPTIONS, GET, PUT, DELETE"
+                },
+                {
+                  "key": "access-control-allow-origin",
+                  "value": "*"
+                },
+                {
+                  "key": "content-security-policy",
+                  "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "referrer-policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "x-xss-protection",
+                  "value": "1; mode=block"
+                },
+                {
+                  "key": "x-cloud-trace-context",
+                  "value": "b416a5216eaa06c47ab330dc728a7553;o=1"
+                },
+                {
+                  "key": "date",
+                  "value": "Sun, 22 Feb 2026 07:15:42 GMT"
+                },
+                {
+                  "key": "server",
+                  "value": "Google Frontend"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "77"
+                },
+                {
+                  "key": "Alt-Svc",
+                  "value": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"message\": \"Invalid or expired session\",\n        \"code\": 401,\n        \"status\": \"error\"\n    }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"admin@example.com\",\r\n  \"password\": \"admin123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/{{api}}/{{version}}/{{auth}}/login",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "{{api}}",
+                "{{version}}",
+                "{{auth}}",
+                "login"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "x-api-key",
+                    "value": "{{api_key}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"email\": \"admin@example.com\",\r\n  \"password\": \"admin123\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/{{api}}/{{version}}/{{auth}}/login",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "{{api}}",
+                    "{{version}}",
+                    "{{auth}}",
+                    "login"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "access-control-allow-credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "access-control-allow-headers",
+                  "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With, X-API-KEY"
+                },
+                {
+                  "key": "access-control-allow-methods",
+                  "value": "POST, HEAD, PATCH, OPTIONS, GET, PUT, DELETE"
+                },
+                {
+                  "key": "access-control-allow-origin",
+                  "value": "*"
+                },
+                {
+                  "key": "content-security-policy",
+                  "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "referrer-policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "x-xss-protection",
+                  "value": "1; mode=block"
+                },
+                {
+                  "key": "x-cloud-trace-context",
+                  "value": "6012d5d6038aff196277d5fdc99b3be8;o=1"
+                },
+                {
+                  "key": "date",
+                  "value": "Sun, 22 Feb 2026 07:02:36 GMT"
+                },
+                {
+                  "key": "server",
+                  "value": "Google Frontend"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "686"
+                },
+                {
+                  "key": "Alt-Svc",
+                  "value": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"message\": \"Login successful\",\n        \"code\": 200,\n        \"status\": \"success\"\n    },\n    \"data\": {\n        \"access_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzE3NDQ2NTYsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2lkIjoiZjM1MTJlMTMtY2EwNS00ZDhjLThmOWEtZTljMzdmYzYwOGZmIn0.GeADu5YrhJyveZkW6GTrGCIMNznE1JDKdUd5jbWP9mE\",\n        \"refresh_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzIzNDg1NTYsInR5cGUiOiJyZWZyZXNoIiwidXNlcl9pZCI6ImYzNTEyZTEzLWNhMDUtNGQ4Yy04ZjlhLWU5YzM3ZmM2MDhmZiJ9.Qu0pAYo-vBoK1ItF4LtsqzmMxvxkR5uyKtzzaDLvSk4\",\n        \"user\": {\n            \"id\": \"f3512e13-ca05-4d8c-8f9a-e9c37fc608ff\",\n            \"username\": \"admin\",\n            \"email\": \"admin@example.com\",\n            \"created_at\": \"2026-02-22T05:10:49.446039Z\",\n            \"updated_at\": \"2026-02-22T05:10:49.446039Z\"\n        }\n    }\n}"
+            },
+            {
+              "name": "Password is required",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "x-api-key",
+                    "value": "{{api_key}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"email\": \"admin@example.com\",\r\n  \"password\": \"\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/{{api}}/{{version}}/{{auth}}/login",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "{{api}}",
+                    "{{version}}",
+                    "{{auth}}",
+                    "login"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "access-control-allow-credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "access-control-allow-headers",
+                  "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With, X-API-KEY"
+                },
+                {
+                  "key": "access-control-allow-methods",
+                  "value": "POST, HEAD, PATCH, OPTIONS, GET, PUT, DELETE"
+                },
+                {
+                  "key": "access-control-allow-origin",
+                  "value": "*"
+                },
+                {
+                  "key": "content-security-policy",
+                  "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "referrer-policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "x-xss-protection",
+                  "value": "1; mode=block"
+                },
+                {
+                  "key": "x-cloud-trace-context",
+                  "value": "9acbf8c4559ae9e22c6c3fc5eb9d124c;o=1"
+                },
+                {
+                  "key": "date",
+                  "value": "Sun, 22 Feb 2026 07:14:01 GMT"
+                },
+                {
+                  "key": "server",
+                  "value": "Google Frontend"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "122"
+                },
+                {
+                  "key": "Alt-Svc",
+                  "value": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"message\": \"Invalid request parameters\",\n        \"code\": 400,\n        \"status\": \"error\"\n    },\n    \"errors\": {\n        \"password\": \"password is required\"\n    }\n}"
+            },
+            {
+              "name": "Email is required",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "x-api-key",
+                    "value": "{{api_key}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"email\": \"\",\r\n  \"password\": \"admin123\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/{{api}}/{{version}}/{{auth}}/login",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "{{api}}",
+                    "{{version}}",
+                    "{{auth}}",
+                    "login"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "access-control-allow-credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "access-control-allow-headers",
+                  "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With, X-API-KEY"
+                },
+                {
+                  "key": "access-control-allow-methods",
+                  "value": "POST, HEAD, PATCH, OPTIONS, GET, PUT, DELETE"
+                },
+                {
+                  "key": "access-control-allow-origin",
+                  "value": "*"
+                },
+                {
+                  "key": "content-security-policy",
+                  "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "referrer-policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "x-xss-protection",
+                  "value": "1; mode=block"
+                },
+                {
+                  "key": "x-cloud-trace-context",
+                  "value": "b99f924ee8577e1085aa4fbe0a4af28c;o=1"
+                },
+                {
+                  "key": "date",
+                  "value": "Sun, 22 Feb 2026 07:15:01 GMT"
+                },
+                {
+                  "key": "server",
+                  "value": "Google Frontend"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "116"
+                },
+                {
+                  "key": "Alt-Svc",
+                  "value": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"message\": \"Invalid request parameters\",\n        \"code\": 400,\n        \"status\": \"error\"\n    },\n    \"errors\": {\n        \"email\": \"email is required\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"johndoess@example.com\",\r\n  \"password\": \"Password\",\r\n  \"username\": \"johndoess\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/{{api}}/{{version}}/{{auth}}/register",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "{{api}}",
+                "{{version}}",
+                "{{auth}}",
+                "register"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Email is already registered",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "x-api-key",
+                    "value": "{{api_key}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"email\": \"johndoes@example.com\",\r\n  \"password\": \"Password123!\",\r\n  \"username\": \"johndoes\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/{{api}}/{{version}}/{{auth}}/register",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "{{api}}",
+                    "{{version}}",
+                    "{{auth}}",
+                    "register"
+                  ]
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "access-control-allow-credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "access-control-allow-headers",
+                  "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With, X-API-KEY"
+                },
+                {
+                  "key": "access-control-allow-methods",
+                  "value": "POST, HEAD, PATCH, OPTIONS, GET, PUT, DELETE"
+                },
+                {
+                  "key": "access-control-allow-origin",
+                  "value": "*"
+                },
+                {
+                  "key": "content-security-policy",
+                  "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "referrer-policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "x-xss-protection",
+                  "value": "1; mode=block"
+                },
+                {
+                  "key": "x-cloud-trace-context",
+                  "value": "575314b931d3bcb360982310f72b109d;o=1"
+                },
+                {
+                  "key": "date",
+                  "value": "Sun, 22 Feb 2026 07:16:34 GMT"
+                },
+                {
+                  "key": "server",
+                  "value": "Google Frontend"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "78"
+                },
+                {
+                  "key": "Alt-Svc",
+                  "value": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"message\": \"Email is already registered\",\n        \"code\": 409,\n        \"status\": \"error\"\n    }\n}"
+            },
+            {
+              "name": "Username is already taken",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "x-api-key",
+                    "value": "{{api_key}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"email\": \"johndoess@example.com\",\r\n  \"password\": \"Password123!\",\r\n  \"username\": \"johndoess\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/{{api}}/{{version}}/{{auth}}/register",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "{{api}}",
+                    "{{version}}",
+                    "{{auth}}",
+                    "register"
+                  ]
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "access-control-allow-credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "access-control-allow-headers",
+                  "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With, X-API-KEY"
+                },
+                {
+                  "key": "access-control-allow-methods",
+                  "value": "POST, HEAD, PATCH, OPTIONS, GET, PUT, DELETE"
+                },
+                {
+                  "key": "access-control-allow-origin",
+                  "value": "*"
+                },
+                {
+                  "key": "content-security-policy",
+                  "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "referrer-policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "x-xss-protection",
+                  "value": "1; mode=block"
+                },
+                {
+                  "key": "x-cloud-trace-context",
+                  "value": "e536cb3baceaf4f236d1e38dcbfb1b8b;o=1"
+                },
+                {
+                  "key": "date",
+                  "value": "Sun, 22 Feb 2026 07:16:50 GMT"
+                },
+                {
+                  "key": "server",
+                  "value": "Google Frontend"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "76"
+                },
+                {
+                  "key": "Alt-Svc",
+                  "value": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"message\": \"Username is already taken\",\n        \"code\": 409,\n        \"status\": \"error\"\n    }\n}"
+            },
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "x-api-key",
+                    "value": "{{api_key}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"email\": \"johndoess@example.com\",\r\n  \"password\": \"Password123!\",\r\n  \"username\": \"johndoess\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/{{api}}/{{version}}/{{auth}}/register",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "{{api}}",
+                    "{{version}}",
+                    "{{auth}}",
+                    "register"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "access-control-allow-credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "access-control-allow-headers",
+                  "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With, X-API-KEY"
+                },
+                {
+                  "key": "access-control-allow-methods",
+                  "value": "POST, HEAD, PATCH, OPTIONS, GET, PUT, DELETE"
+                },
+                {
+                  "key": "access-control-allow-origin",
+                  "value": "*"
+                },
+                {
+                  "key": "content-security-policy",
+                  "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "referrer-policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "x-xss-protection",
+                  "value": "1; mode=block"
+                },
+                {
+                  "key": "x-cloud-trace-context",
+                  "value": "5c5170a35c3e3da3c3cc54c44eb88da0;o=1"
+                },
+                {
+                  "key": "date",
+                  "value": "Sun, 22 Feb 2026 07:17:33 GMT"
+                },
+                {
+                  "key": "server",
+                  "value": "Google Frontend"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "276"
+                },
+                {
+                  "key": "Alt-Svc",
+                  "value": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"message\": \"Registration successful\",\n        \"code\": 201,\n        \"status\": \"success\"\n    },\n    \"data\": {\n        \"id\": \"a6c102fa-426f-4a7e-a6c4-82f40a540a2b\",\n        \"username\": \"johndoess\",\n        \"email\": \"johndoess@example.com\",\n        \"created_at\": \"2026-02-22T07:17:33.305542741Z\",\n        \"updated_at\": \"2026-02-22T07:17:33.305542741Z\"\n    }\n}"
+            },
+            {
+              "name": "password must contain at least one symbol",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "x-api-key",
+                    "value": "{{api_key}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"email\": \"johndoess@example.com\",\r\n  \"password\": \"Password123\",\r\n  \"username\": \"johndoess\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/{{api}}/{{version}}/{{auth}}/register",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "{{api}}",
+                    "{{version}}",
+                    "{{auth}}",
+                    "register"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "access-control-allow-credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "access-control-allow-headers",
+                  "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With, X-API-KEY"
+                },
+                {
+                  "key": "access-control-allow-methods",
+                  "value": "POST, HEAD, PATCH, OPTIONS, GET, PUT, DELETE"
+                },
+                {
+                  "key": "access-control-allow-origin",
+                  "value": "*"
+                },
+                {
+                  "key": "content-security-policy",
+                  "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "referrer-policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "x-xss-protection",
+                  "value": "1; mode=block"
+                },
+                {
+                  "key": "x-cloud-trace-context",
+                  "value": "44f576474ebec26d923c0b70510039a8;o=1"
+                },
+                {
+                  "key": "date",
+                  "value": "Sun, 22 Feb 2026 07:17:48 GMT"
+                },
+                {
+                  "key": "server",
+                  "value": "Google Frontend"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "143"
+                },
+                {
+                  "key": "Alt-Svc",
+                  "value": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"message\": \"Invalid request parameters\",\n        \"code\": 400,\n        \"status\": \"error\"\n    },\n    \"errors\": {\n        \"password\": \"password must contain at least one symbol\"\n    }\n}"
+            },
+            {
+              "name": "password must be between 8 and 100 characters",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "x-api-key",
+                    "value": "{{api_key}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"email\": \"johndoess@example.com\",\r\n  \"password\": \"assword\",\r\n  \"username\": \"johndoess\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/{{api}}/{{version}}/{{auth}}/register",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "{{api}}",
+                    "{{version}}",
+                    "{{auth}}",
+                    "register"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "access-control-allow-credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "access-control-allow-headers",
+                  "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With, X-API-KEY"
+                },
+                {
+                  "key": "access-control-allow-methods",
+                  "value": "POST, HEAD, PATCH, OPTIONS, GET, PUT, DELETE"
+                },
+                {
+                  "key": "access-control-allow-origin",
+                  "value": "*"
+                },
+                {
+                  "key": "content-security-policy",
+                  "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "referrer-policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "x-xss-protection",
+                  "value": "1; mode=block"
+                },
+                {
+                  "key": "x-cloud-trace-context",
+                  "value": "efe7cd85acae115c9157abe8c31f5ce7"
+                },
+                {
+                  "key": "date",
+                  "value": "Sun, 22 Feb 2026 07:18:13 GMT"
+                },
+                {
+                  "key": "server",
+                  "value": "Google Frontend"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "147"
+                },
+                {
+                  "key": "Alt-Svc",
+                  "value": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"message\": \"Invalid request parameters\",\n        \"code\": 400,\n        \"status\": \"error\"\n    },\n    \"errors\": {\n        \"password\": \"password must be between 8 and 100 characters\"\n    }\n}"
+            },
+            {
+              "name": "password must contain at least one uppercase letter",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "x-api-key",
+                    "value": "{{api_key}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"email\": \"johndoess@example.com\",\r\n  \"password\": \"password\",\r\n  \"username\": \"johndoess\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/{{api}}/{{version}}/{{auth}}/register",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "{{api}}",
+                    "{{version}}",
+                    "{{auth}}",
+                    "register"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "access-control-allow-credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "access-control-allow-headers",
+                  "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With, X-API-KEY"
+                },
+                {
+                  "key": "access-control-allow-methods",
+                  "value": "POST, HEAD, PATCH, OPTIONS, GET, PUT, DELETE"
+                },
+                {
+                  "key": "access-control-allow-origin",
+                  "value": "*"
+                },
+                {
+                  "key": "content-security-policy",
+                  "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "referrer-policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "x-xss-protection",
+                  "value": "1; mode=block"
+                },
+                {
+                  "key": "x-cloud-trace-context",
+                  "value": "4f34c3286ef872edd9b9f5344553d7dc;o=1"
+                },
+                {
+                  "key": "date",
+                  "value": "Sun, 22 Feb 2026 07:18:35 GMT"
+                },
+                {
+                  "key": "server",
+                  "value": "Google Frontend"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "153"
+                },
+                {
+                  "key": "Alt-Svc",
+                  "value": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"message\": \"Invalid request parameters\",\n        \"code\": 400,\n        \"status\": \"error\"\n    },\n    \"errors\": {\n        \"password\": \"password must contain at least one uppercase letter\"\n    }\n}"
+            },
+            {
+              "name": "password must contain at least one number",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "x-api-key",
+                    "value": "{{api_key}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"email\": \"johndoess@example.com\",\r\n  \"password\": \"Password!\",\r\n  \"username\": \"johndoess\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/{{api}}/{{version}}/{{auth}}/register",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "{{api}}",
+                    "{{version}}",
+                    "{{auth}}",
+                    "register"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "access-control-allow-credentials",
+                  "value": "true"
+                },
+                {
+                  "key": "access-control-allow-headers",
+                  "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With, X-API-KEY"
+                },
+                {
+                  "key": "access-control-allow-methods",
+                  "value": "POST, HEAD, PATCH, OPTIONS, GET, PUT, DELETE"
+                },
+                {
+                  "key": "access-control-allow-origin",
+                  "value": "*"
+                },
+                {
+                  "key": "content-security-policy",
+                  "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;"
+                },
+                {
+                  "key": "content-type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "referrer-policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "strict-transport-security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "x-content-type-options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "x-frame-options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "x-xss-protection",
+                  "value": "1; mode=block"
+                },
+                {
+                  "key": "x-cloud-trace-context",
+                  "value": "9ffe2ec36140c471c802fe833571e839;o=1"
+                },
+                {
+                  "key": "date",
+                  "value": "Sun, 22 Feb 2026 07:18:58 GMT"
+                },
+                {
+                  "key": "server",
+                  "value": "Google Frontend"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "143"
+                },
+                {
+                  "key": "Alt-Svc",
+                  "value": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"message\": \"Invalid request parameters\",\n        \"code\": 400,\n        \"status\": \"error\"\n    },\n    \"errors\": {\n        \"password\": \"password must contain at least one number\"\n    }\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Tasks",
+      "item": [
+        {
+          "name": "Get All Tasks",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"john@example.com\",\r\n  \"password\": \"password123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/{{api}}/{{version}}/tasks?page=1&limit=10",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "{{api}}",
+                "{{version}}",
+                "tasks"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "sort",
+                  "value": "title asc",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "sort",
+                  "value": "created_at desc",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "sort",
+                  "value": "created_at asc",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "status ",
+                  "value": "todo",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "status ",
+                  "value": "in_progress",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "status ",
+                  "value": "done",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "title",
+                  "value": "string",
+                  "type": "text",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "x-api-key",
+                    "value": "{{api_key}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"email\": \"john@example.com\",\r\n  \"password\": \"password123\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/{{api}}/{{version}}/tasks?page=1&limit=10",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "{{api}}",
+                    "{{version}}",
+                    "tasks"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "sort",
+                      "value": "title asc",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "sort",
+                      "value": "created_at desc",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "sort",
+                      "value": "created_at asc",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "status ",
+                      "value": "todo",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "status ",
+                      "value": "in_progress",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "status ",
+                      "value": "done",
+                      "type": "text",
+                      "disabled": true
+                    },
+                    {
+                      "key": "title",
+                      "value": "string",
+                      "type": "text",
+                      "disabled": true
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Access-Control-Allow-Headers",
+                  "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With, X-API-KEY"
+                },
+                {
+                  "key": "Access-Control-Allow-Methods",
+                  "value": "POST, HEAD, PATCH, OPTIONS, GET, PUT, DELETE"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                },
+                {
+                  "key": "Content-Security-Policy",
+                  "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "X-Xss-Protection",
+                  "value": "1; mode=block"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 22 Feb 2026 07:19:56 GMT"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"message\": \"Data retrieved successfully\",\n        \"code\": 200,\n        \"status\": \"success\",\n        \"pagination\": {\n            \"total\": 67,\n            \"page\": 1,\n            \"limit\": 10,\n            \"total_pages\": 7,\n            \"has_next\": true,\n            \"has_previous\": false\n        }\n    },\n    \"data\": [\n        {\n            \"id\": \"b6969c10-5a12-4b3c-9157-6d744ee61bf4\",\n            \"title\": \"string\",\n            \"description\": \"string\",\n            \"status\": \"todo\",\n            \"user_id\": \"f3512e13-ca05-4d8c-8f9a-e9c37fc608ff\",\n            \"created_at\": \"2026-02-22T07:10:00.535631Z\",\n            \"updated_at\": \"2026-02-22T07:10:00.535631Z\"\n        },\n        {\n            \"id\": \"4ef84210-0ac2-45d3-aa84-97868882c143\",\n            \"title\": \"string\",\n            \"description\": \"string\",\n            \"status\": \"todo\",\n            \"user_id\": \"f3512e13-ca05-4d8c-8f9a-e9c37fc608ff\",\n            \"created_at\": \"2026-02-22T07:04:01.324714Z\",\n            \"updated_at\": \"2026-02-22T07:04:01.324714Z\"\n        },\n        {\n            \"id\": \"22228980-9d67-4ed8-b609-fed21161cca5\",\n            \"title\": \"string\",\n            \"description\": \"string\",\n            \"status\": \"todo\",\n            \"user_id\": \"f3512e13-ca05-4d8c-8f9a-e9c37fc608ff\",\n            \"created_at\": \"2026-02-22T07:02:58.782849Z\",\n            \"updated_at\": \"2026-02-22T07:02:58.782849Z\"\n        },\n        {\n            \"id\": \"d03f6eaa-c2f5-474c-95c2-7881928dd4a5\",\n            \"title\": \"Implement Auth\",\n            \"description\": \"Create JWT authentication and authorization\",\n            \"status\": \"todo\",\n            \"user_id\": \"f3512e13-ca05-4d8c-8f9a-e9c37fc608ff\",\n            \"created_at\": \"2026-02-22T06:55:11.10416Z\",\n            \"updated_at\": \"2026-02-22T06:55:11.10416Z\"\n        },\n        {\n            \"id\": \"0f1513dc-4faf-4d39-bf46-77642ef5f739\",\n            \"title\": \"Setup Project\",\n            \"description\": \"Configure the initial project structure and dependencies\",\n            \"status\": \"todo\",\n            \"user_id\": \"f3512e13-ca05-4d8c-8f9a-e9c37fc608ff\",\n            \"created_at\": \"2026-02-22T06:55:10.70039Z\",\n            \"updated_at\": \"2026-02-22T06:55:10.70039Z\"\n        },\n        {\n            \"id\": \"8af81158-bc34-4dee-949d-08b8ff19ea5e\",\n            \"title\": \"Setup Project\",\n            \"description\": \"Configure the initial project structure and dependencies\",\n            \"status\": \"todo\",\n            \"user_id\": \"f3512e13-ca05-4d8c-8f9a-e9c37fc608ff\",\n            \"created_at\": \"2026-02-22T06:55:07.336315Z\",\n            \"updated_at\": \"2026-02-22T06:55:07.336315Z\"\n        },\n        {\n            \"id\": \"ba4de175-bc69-4aca-b029-bb65ee61ca69\",\n            \"title\": \"Implement Auth\",\n            \"description\": \"Create JWT authentication and authorization\",\n            \"status\": \"todo\",\n            \"user_id\": \"f3512e13-ca05-4d8c-8f9a-e9c37fc608ff\",\n            \"created_at\": \"2026-02-22T06:53:31.691891Z\",\n            \"updated_at\": \"2026-02-22T06:53:31.691891Z\"\n        },\n        {\n            \"id\": \"39f65c2f-8cce-4819-a1d6-c7ffd7702c47\",\n            \"title\": \"Setup Project\",\n            \"description\": \"Configure the initial project structure and dependencies\",\n            \"status\": \"todo\",\n            \"user_id\": \"f3512e13-ca05-4d8c-8f9a-e9c37fc608ff\",\n            \"created_at\": \"2026-02-22T06:53:31.614151Z\",\n            \"updated_at\": \"2026-02-22T06:53:31.614151Z\"\n        },\n        {\n            \"id\": \"612aa2a3-729b-48ee-b197-510c6ae50163\",\n            \"title\": \"Implement Auth\",\n            \"description\": \"Create JWT authentication and authorization\",\n            \"status\": \"todo\",\n            \"user_id\": \"f3512e13-ca05-4d8c-8f9a-e9c37fc608ff\",\n            \"created_at\": \"2026-02-22T06:53:28.298077Z\",\n            \"updated_at\": \"2026-02-22T06:53:28.298077Z\"\n        },\n        {\n            \"id\": \"61e6d671-0c35-49d4-8218-fc88ff2bf6bb\",\n            \"title\": \"Setup Project\",\n            \"description\": \"Configure the initial project structure and dependencies\",\n            \"status\": \"todo\",\n            \"user_id\": \"f3512e13-ca05-4d8c-8f9a-e9c37fc608ff\",\n            \"created_at\": \"2026-02-22T06:53:28.232547Z\",\n            \"updated_at\": \"2026-02-22T06:53:28.232547Z\"\n        }\n    ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Create Task",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"description\": \"string\",\r\n  \"status\": \"todo\",\r\n  \"title\": \"string\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/{{api}}/{{version}}/tasks",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "{{api}}",
+                "{{version}}",
+                "tasks"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "x-api-key",
+                    "value": "{{api_key}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"description\": \"string\",\r\n  \"status\": \"todo\",\r\n  \"title\": \"string\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/{{api}}/{{version}}/tasks",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "{{api}}",
+                    "{{version}}",
+                    "tasks"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Access-Control-Allow-Headers",
+                  "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With, X-API-KEY"
+                },
+                {
+                  "key": "Access-Control-Allow-Methods",
+                  "value": "POST, HEAD, PATCH, OPTIONS, GET, PUT, DELETE"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                },
+                {
+                  "key": "Content-Security-Policy",
+                  "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "X-Xss-Protection",
+                  "value": "1; mode=block"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 22 Feb 2026 07:20:09 GMT"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "334"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"message\": \"Data created successfully\",\n        \"code\": 201,\n        \"status\": \"success\"\n    },\n    \"data\": {\n        \"id\": \"b1ad4004-ed3d-4671-9988-edc16d4bee00\",\n        \"title\": \"string\",\n        \"description\": \"string\",\n        \"status\": \"todo\",\n        \"user_id\": \"f3512e13-ca05-4d8c-8f9a-e9c37fc608ff\",\n        \"created_at\": \"2026-02-22T14:20:08.9534224+07:00\",\n        \"updated_at\": \"2026-02-22T14:20:08.9534224+07:00\"\n    }\n}"
+            },
+            {
+              "name": "must be one of: todo, in_progress, done",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "x-api-key",
+                    "value": "{{api_key}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"description\": \"string\",\r\n  \"status\": \"hoho\",\r\n  \"title\": \"string\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/{{api}}/{{version}}/tasks",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "{{api}}",
+                    "{{version}}",
+                    "tasks"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Access-Control-Allow-Headers",
+                  "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With, X-API-KEY"
+                },
+                {
+                  "key": "Access-Control-Allow-Methods",
+                  "value": "POST, HEAD, PATCH, OPTIONS, GET, PUT, DELETE"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                },
+                {
+                  "key": "Content-Security-Policy",
+                  "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "X-Xss-Protection",
+                  "value": "1; mode=block"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 22 Feb 2026 07:20:26 GMT"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "139"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"message\": \"Invalid request parameters\",\n        \"code\": 400,\n        \"status\": \"error\"\n    },\n    \"errors\": {\n        \"status\": \"must be one of: todo, in_progress, done\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Get Task by ID",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"john@example.com\",\r\n  \"password\": \"password123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/{{api}}/{{version}}/tasks/:id",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "{{api}}",
+                "{{version}}",
+                "tasks",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "b1ad4004-ed3d-4671-9988-edc16d4bee00"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Not Found",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "x-api-key",
+                    "value": "{{api_key}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"email\": \"john@example.com\",\r\n  \"password\": \"password123\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/{{api}}/{{version}}/tasks/:id",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "{{api}}",
+                    "{{version}}",
+                    "tasks",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "f35388cb-5a25-4c40-97de-ba74b69b2b4d"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Access-Control-Allow-Headers",
+                  "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With, X-API-KEY"
+                },
+                {
+                  "key": "Access-Control-Allow-Methods",
+                  "value": "POST, HEAD, PATCH, OPTIONS, GET, PUT, DELETE"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                },
+                {
+                  "key": "Content-Security-Policy",
+                  "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "X-Xss-Protection",
+                  "value": "1; mode=block"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 22 Feb 2026 07:20:42 GMT"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "65"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"message\": \"Task not found\",\n        \"code\": 404,\n        \"status\": \"error\"\n    }\n}"
+            },
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "x-api-key",
+                    "value": "{{api_key}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"email\": \"john@example.com\",\r\n  \"password\": \"password123\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/{{api}}/{{version}}/tasks/:id",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "{{api}}",
+                    "{{version}}",
+                    "tasks",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "b1ad4004-ed3d-4671-9988-edc16d4bee00"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Access-Control-Allow-Headers",
+                  "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With, X-API-KEY"
+                },
+                {
+                  "key": "Access-Control-Allow-Methods",
+                  "value": "POST, HEAD, PATCH, OPTIONS, GET, PUT, DELETE"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                },
+                {
+                  "key": "Content-Security-Policy",
+                  "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "X-Xss-Protection",
+                  "value": "1; mode=block"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 22 Feb 2026 07:21:06 GMT"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "324"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"message\": \"Data retrieved successfully\",\n        \"code\": 200,\n        \"status\": \"success\"\n    },\n    \"data\": {\n        \"id\": \"b1ad4004-ed3d-4671-9988-edc16d4bee00\",\n        \"title\": \"string\",\n        \"description\": \"string\",\n        \"status\": \"todo\",\n        \"user_id\": \"f3512e13-ca05-4d8c-8f9a-e9c37fc608ff\",\n        \"created_at\": \"2026-02-22T07:20:08.953422Z\",\n        \"updated_at\": \"2026-02-22T07:20:08.953422Z\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update Task",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n//   \"description\": \"string\",\r\n  \"status\": \"done\"\r\n//   \"title\": \"string\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/{{api}}/{{version}}/tasks/:id",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "{{api}}",
+                "{{version}}",
+                "tasks",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "a5cd7219-9012-43dc-abce-dc7de2fc5055"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "x-api-key",
+                    "value": "{{api_key}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"description\": \"adsdsaasddsasad\",\r\n  \"status\": \"in_progress\",\r\n  \"title\": \"asdsadadsdas\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/{{api}}/{{version}}/tasks/:id",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "{{api}}",
+                    "{{version}}",
+                    "tasks",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "b1ad4004-ed3d-4671-9988-edc16d4bee00"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Access-Control-Allow-Headers",
+                  "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With, X-API-KEY"
+                },
+                {
+                  "key": "Access-Control-Allow-Methods",
+                  "value": "POST, HEAD, PATCH, OPTIONS, GET, PUT, DELETE"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                },
+                {
+                  "key": "Content-Security-Policy",
+                  "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "X-Xss-Protection",
+                  "value": "1; mode=block"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 22 Feb 2026 07:21:23 GMT"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "344"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"message\": \"Data updated successfully\",\n        \"code\": 200,\n        \"status\": \"success\"\n    },\n    \"data\": {\n        \"id\": \"b1ad4004-ed3d-4671-9988-edc16d4bee00\",\n        \"title\": \"asdsadadsdas\",\n        \"description\": \"adsdsaasddsasad\",\n        \"status\": \"in_progress\",\n        \"user_id\": \"f3512e13-ca05-4d8c-8f9a-e9c37fc608ff\",\n        \"created_at\": \"2026-02-22T07:20:08.953422Z\",\n        \"updated_at\": \"2026-02-22T07:20:08.953422Z\"\n    }\n}"
+            },
+            {
+              "name": "must be one of: todo, in_progress, done",
+              "originalRequest": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "x-api-key",
+                    "value": "{{api_key}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"description\": \"adsdsaasddsasad\",\r\n  \"status\": \"hoho\",\r\n  \"title\": \"asdsadadsdas\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/{{api}}/{{version}}/tasks/:id",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "{{api}}",
+                    "{{version}}",
+                    "tasks",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "b1ad4004-ed3d-4671-9988-edc16d4bee00"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Access-Control-Allow-Headers",
+                  "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With, X-API-KEY"
+                },
+                {
+                  "key": "Access-Control-Allow-Methods",
+                  "value": "POST, HEAD, PATCH, OPTIONS, GET, PUT, DELETE"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                },
+                {
+                  "key": "Content-Security-Policy",
+                  "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "X-Xss-Protection",
+                  "value": "1; mode=block"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 22 Feb 2026 07:21:41 GMT"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "139"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"message\": \"Invalid request parameters\",\n        \"code\": 400,\n        \"status\": \"error\"\n    },\n    \"errors\": {\n        \"status\": \"must be one of: todo, in_progress, done\"\n    }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Delete Task",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"john@example.com\",\r\n  \"password\": \"password123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{url}}/{{api}}/{{version}}/tasks/:id",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "{{api}}",
+                "{{version}}",
+                "tasks",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "b1ad4004-ed3d-4671-9988-edc16d4bee00"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "x-api-key",
+                    "value": "{{api_key}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"email\": \"john@example.com\",\r\n  \"password\": \"password123\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/{{api}}/{{version}}/tasks/:id",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "{{api}}",
+                    "{{version}}",
+                    "tasks",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "b1ad4004-ed3d-4671-9988-edc16d4bee00"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Access-Control-Allow-Headers",
+                  "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With, X-API-KEY"
+                },
+                {
+                  "key": "Access-Control-Allow-Methods",
+                  "value": "POST, HEAD, PATCH, OPTIONS, GET, PUT, DELETE"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                },
+                {
+                  "key": "Content-Security-Policy",
+                  "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "X-Xss-Protection",
+                  "value": "1; mode=block"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 22 Feb 2026 07:22:36 GMT"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "78"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"message\": \"Data deleted successfully\",\n        \"code\": 200,\n        \"status\": \"success\"\n    }\n}"
+            },
+            {
+              "name": "Not Found",
+              "originalRequest": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "x-api-key",
+                    "value": "{{api_key}}",
+                    "type": "text"
+                  },
+                  {
+                    "key": "Authorization",
+                    "value": "Bearer {{token}}",
+                    "type": "text"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n  \"email\": \"john@example.com\",\r\n  \"password\": \"password123\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{url}}/{{api}}/{{version}}/tasks/:id",
+                  "host": [
+                    "{{url}}"
+                  ],
+                  "path": [
+                    "{{api}}",
+                    "{{version}}",
+                    "tasks",
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "b1ad4004-ed3d-4671-9988-edc16d4bee00"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": null,
+              "header": [
+                {
+                  "key": "Access-Control-Allow-Headers",
+                  "value": "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With, X-API-KEY"
+                },
+                {
+                  "key": "Access-Control-Allow-Methods",
+                  "value": "POST, HEAD, PATCH, OPTIONS, GET, PUT, DELETE"
+                },
+                {
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "*"
+                },
+                {
+                  "key": "Content-Security-Policy",
+                  "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json; charset=utf-8"
+                },
+                {
+                  "key": "Referrer-Policy",
+                  "value": "strict-origin-when-cross-origin"
+                },
+                {
+                  "key": "Strict-Transport-Security",
+                  "value": "max-age=31536000; includeSubDomains"
+                },
+                {
+                  "key": "X-Content-Type-Options",
+                  "value": "nosniff"
+                },
+                {
+                  "key": "X-Frame-Options",
+                  "value": "DENY"
+                },
+                {
+                  "key": "X-Xss-Protection",
+                  "value": "1; mode=block"
+                },
+                {
+                  "key": "Date",
+                  "value": "Sun, 22 Feb 2026 07:22:49 GMT"
+                },
+                {
+                  "key": "Content-Length",
+                  "value": "65"
+                }
+              ],
+              "cookie": [],
+              "body": "{\n    \"meta\": {\n        \"message\": \"Task not found\",\n        \"code\": 404,\n        \"status\": \"error\"\n    }\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

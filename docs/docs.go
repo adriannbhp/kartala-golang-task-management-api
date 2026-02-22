@@ -26,6 +26,11 @@ const docTemplate = `{
     "paths": {
         "/api/v1/auth/login": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Authenticate user and return JWT tokens",
                 "consumes": [
                     "application/json"
@@ -72,6 +77,11 @@ const docTemplate = `{
         },
         "/api/v1/auth/refresh": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Get a new access token using a valid refresh token",
                 "consumes": [
                     "application/json"
@@ -123,6 +133,11 @@ const docTemplate = `{
         },
         "/api/v1/auth/register": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Create a new user account with username and email",
                 "consumes": [
                     "application/json"
@@ -971,9 +986,9 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:8081",
+	Host:             "",
 	BasePath:         "/",
-	Schemes:          []string{},
+	Schemes:          []string{"http", "https"},
 	Title:            "Kartala Task Management API",
 	Description:      "API Server for Kartala Task Management API",
 	InfoInstanceName: "swagger",

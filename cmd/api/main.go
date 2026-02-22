@@ -10,7 +10,7 @@
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
  
-// @host localhost:8081
+// @schemes http https
 // @BasePath /
  
 // @securityDefinitions.apikey ApiKeyAuth
@@ -57,7 +57,11 @@ func Run() error {
 	}
 
 	// Start server
+	// APP_PORT takes priority, then PORT (injected by Cloud Run), then default 8080
 	port := os.Getenv("APP_PORT")
+	if port == "" {
+		port = os.Getenv("PORT")
+	}
 	if port == "" {
 		port = "8080"
 	}
@@ -105,9 +109,11 @@ func SetupApp() (*gin.Engine, *config.DatabaseConfig, error) {
 
 	// Setup router
 	r := gin.New()
-	r.Use(middleware.SecurityHeaders())
 	r.Use(middleware.CORSMiddleware())
+	r.Use(middleware.SecurityHeaders())
 	r.Use(middleware.RequestLogger(logger.Logger))
+	r.Use(middleware.RequestSizeLimit(2 * 1024 * 1024)) // 2MB Max
+	r.Use(middleware.RequestTimeout(60 * time.Second))
 
 	http.SetupRoutes(r, authHandler, userHandler, taskHandler, cfg.Secret.JwtSecret, cfg.Secret.ApiKey)
 

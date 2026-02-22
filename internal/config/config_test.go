@@ -167,3 +167,41 @@ func TestLoadConfig(t *testing.T) {
 		os.Chdir(originalWd)
 	})
 }
+
+func TestGCSCredentials(t *testing.T) {
+	t.Run("valid_base64", func(t *testing.T) {
+		// Set dummy env vars to avoid LoadConfig errors
+		t.Setenv("GO_ENV", "test")
+		t.Setenv("JWT_SECRET", "dummy")
+		t.Setenv("API_KEY", "dummy")
+
+		// dummy-json in base64
+		// {"type": "service_account"} -> eyJ0eXBlIjogInNlcnZpY2VfYWNjb3VudCJ9
+		dummyBase64 := "eyJ0eXBlIjogInNlcnZpY2VfYWNjb3VudCJ9"
+		t.Setenv("GCS_CREDENTIALS_BASE64", dummyBase64)
+
+		_, err := LoadConfig()
+		assert.NoError(t, err)
+
+		credsPath := os.Getenv("GOOGLE_APPLICATION_CREDENTIALS")
+		assert.NotEmpty(t, credsPath)
+		assert.Contains(t, credsPath, "gcs-credentials.json")
+
+		content, err := os.ReadFile(credsPath)
+		assert.NoError(t, err)
+		assert.Equal(t, `{"type": "service_account"}`, string(content))
+	})
+
+	t.Run("invalid_base64", func(t *testing.T) {
+		t.Setenv("GO_ENV", "test")
+		t.Setenv("JWT_SECRET", "dummy")
+		t.Setenv("API_KEY", "dummy")
+		t.Setenv("GCS_CREDENTIALS_BASE64", "invalid@@@")
+
+		// Should not panic, just log warning and not set env
+		os.Unsetenv("GOOGLE_APPLICATION_CREDENTIALS")
+		_, err := LoadConfig()
+		assert.NoError(t, err)
+		assert.Empty(t, os.Getenv("GOOGLE_APPLICATION_CREDENTIALS"))
+	})
+}

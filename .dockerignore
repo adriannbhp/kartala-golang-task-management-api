@@ -1,0 +1,37 @@
+# Binaries
+bin/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test artifacts
+coverage.out
+coverage.html
+*_coverage.html
+
+# Environment files (jangan di-copy ke image!)
+.env
+.env.*
+!.env.example
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Git
+.git/
+.gitignore
+
+# Air (live reload)
+tmp/
+.air.toml
+
+# Vendor (kalau ada)
+vendor/
+
+# Docs source (swagger ini di-copy manual jika perlu)
+# docs/ → TIDAK di-exclude karena runtime butuh ini untuk Swagger UI

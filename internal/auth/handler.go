@@ -28,6 +28,7 @@ func NewHandler(authUsecase Usecase, jwtSecret string) *Handler {
 // @Tags auth
 // @Accept json
 // @Produce json
+// @Security ApiKeyAuth
 // @Param request body RegisterParameter true "Registration details"
 // @Success 201 {object} response.SwaggerRegisterResponse "User created successfully"
 // @Failure 400 {object} response.SwaggerBadRequestResponse "Invalid request"
@@ -74,6 +75,7 @@ func (h *Handler) Register(c *gin.Context) {
 // @Tags auth
 // @Accept json
 // @Produce json
+// @Security ApiKeyAuth
 // @Param request body LoginParameter true "Login credentials"
 // @Success 200 {object} response.SwaggerLoginResponse "Login successful"
 // @Failure 400 {object} response.SwaggerBadRequestResponse "Invalid request"
@@ -123,6 +125,7 @@ func (h *Handler) Login(c *gin.Context) {
 // @Tags auth
 // @Accept json
 // @Produce json
+// @Security ApiKeyAuth
 // @Param request body object{refresh_token=string} true "Refresh token"
 // @Success 200 {object} response.SwaggerLoginResponse "Token refreshed successfully"
 // @Failure 400 {object} response.SwaggerBadRequestResponse "Invalid request"

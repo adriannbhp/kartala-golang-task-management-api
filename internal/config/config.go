@@ -1,9 +1,11 @@
 package config
 
 import (
+	"encoding/base64"
 	"errors"
 	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/joho/godotenv"
 )
@@ -99,6 +101,25 @@ func LoadConfig() (Config, error) {
 			cfg.Secret.ApiKey = "test_api_key_123"
 		} else {
 			return cfg, errors.New("API_KEY is required in .env file")
+		}
+	}
+
+	// Handle GCS Credentials if provided via base64
+	gcsBase64 := os.Getenv("GCS_CREDENTIALS_BASE64")
+	if gcsBase64 != "" {
+		decoded, err := base64.StdEncoding.DecodeString(gcsBase64)
+		if err != nil {
+			log.Printf("Warning: Failed to decode GCS_CREDENTIALS_BASE64: %v", err)
+		} else {
+			// Write to temp file
+			tmpPath := filepath.Join(os.TempDir(), "gcs-credentials.json")
+			err = os.WriteFile(tmpPath, decoded, 0600)
+			if err != nil {
+				log.Printf("Warning: Failed to write GCS credentials to temp file: %v", err)
+			} else {
+				os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", tmpPath)
+				log.Printf("Successfully set GOOGLE_APPLICATION_CREDENTIALS to %s", tmpPath)
+			}
 		}
 	}
 

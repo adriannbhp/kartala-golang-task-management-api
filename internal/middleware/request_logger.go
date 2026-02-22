@@ -12,7 +12,7 @@ import (
 func RequestLogger(logger logrus.FieldLogger) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		requestID := uuid.New().String()
-		timeoutCtx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+		timeoutCtx, cancel := context.WithTimeout(c.Request.Context(), 10*time.Second)
 		defer cancel()
 
 		ctx := context.WithValue(timeoutCtx, "request_id", requestID)

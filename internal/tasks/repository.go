@@ -96,9 +96,12 @@ func (r *gormRepository) FindAllByUserID(ctx context.Context, userID uuid.UUID, 
 	}
 
 	// Sorting
-	sort := param.Pagination.Sort
-	if sort == "" {
+	sort := strings.TrimSpace(param.Pagination.Sort)
+	lowerSort := strings.ToLower(sort)
+	if lowerSort == "" {
 		sort = "created_at desc"
+	} else if lowerSort == "asc" || lowerSort == "desc" {
+		sort = "created_at " + lowerSort
 	}
 	db = db.Order(sort)
 

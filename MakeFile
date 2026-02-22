@@ -1,9 +1,24 @@
-.PHONY: migrate-up migrate-down migrate-create migrate-force migrate-version dev run build test test-unit test-integration test-coverage
+.PHONY: migrate-up migrate-down migrate-create migrate-force migrate-version dev run build test test-unit test-integration test-coverage docker-build docker-push deploy deploy-full docker-up docker-down docker-logs docker-restart
 
 ifneq (,$(wildcard ./.env))
     include .env
     export
 endif
+
+# Helper to check for mandatory GCP variables
+check-gcp-vars:
+ifndef GCP_PROJECT
+	$(error GCP_PROJECT is not set. Usage: 'make <target> GCP_PROJECT=id [GCP_REGION=region] [SERVICE_NAME=name]')
+endif
+ifndef GCP_REGION
+	$(error GCP_REGION is not set. Usage: 'make <target> GCP_PROJECT=id [GCP_REGION=region] [SERVICE_NAME=name]')
+endif
+ifndef SERVICE_NAME
+	$(error SERVICE_NAME is not set. Usage: 'make <target> GCP_PROJECT=id [GCP_REGION=region] [SERVICE_NAME=name]')
+endif
+
+# Dynamic Image Name
+IMAGE_NAME = gcr.io/$(GCP_PROJECT)/$(SERVICE_NAME)
 
 # Database URL for migrations
 DB_URL_FINAL := $(strip $(DB_URL))
@@ -121,22 +136,86 @@ clean:
 	@if exist coverage.html del /f coverage.html
 	@echo "✓ Clean completed"
 
+# ─────────────────────────────────────────────
+# Docker Compose (Local Context)
+# ─────────────────────────────────────────────
+
+docker-up:
+	@echo "Starting services with Docker Compose..."
+	@docker-compose up -d --build
+	@echo "✓ Services started"
+
+docker-down:
+	@echo "Stopping services..."
+	@docker-compose down
+	@echo "✓ Services stopped"
+
+docker-logs:
+	@docker-compose logs -f
+
+docker-restart: docker-down docker-up
+
+# ─────────────────────────────────────────────
+# GCP Cloud Run Deployment
+# ─────────────────────────────────────────────
+
+# Build Docker image locally
+docker-build: check-gcp-vars
+	@echo "Building Docker image: $(IMAGE_NAME)..."
+	@docker build -t $(IMAGE_NAME) .
+	@echo "✓ Docker image built"
+
+# Push image to Google Container Registry
+docker-push: check-gcp-vars
+	@echo "Pushing image to GCR: $(IMAGE_NAME)..."
+	@docker push $(IMAGE_NAME)
+	@echo "✓ Image pushed"
+
+# Deploy to Cloud Run (requires image already pushed)
+deploy: check-gcp-vars
+	@echo "Deploying $(SERVICE_NAME) to Cloud Run ($(GCP_REGION))..."
+	@gcloud run deploy $(SERVICE_NAME) \
+		--image $(IMAGE_NAME) \
+		--platform managed \
+		--region $(GCP_REGION) \
+		--project $(GCP_PROJECT) \
+		--allow-unauthenticated \
+		--set-env-vars "DB_HOST=$(DB_HOST),DB_PORT=$(DB_PORT),DB_USER=$(DB_USER),DB_PASSWORD=$(DB_PASSWORD),DB_NAME=$(DB_NAME),DB_NAME_TEST=$(DB_NAME_TEST),DB_SSLMODE=$(DB_SSLMODE),JWT_SECRET=$(JWT_SECRET),API_KEY=$(API_KEY),ACCESS_TOKEN_DURATION=$(ACCESS_TOKEN_DURATION),REFRESH_TOKEN_DURATION=$(REFRESH_TOKEN_DURATION),GCS_CREDENTIALS_BASE64=$(GCS_CREDENTIALS_BASE64)"
+	@echo "✓ Deployed! URL:"
+	@gcloud run services describe $(SERVICE_NAME) --region $(GCP_REGION) --project $(GCP_PROJECT) --format "value(status.url)"
+
+# Full pipeline: build → push → deploy (requires local Docker)
+deploy-full: docker-build docker-push deploy
+	@echo "✓ Full deploy completed"
+
+# Cloud Build pipeline: build image on GCP (no local Docker required)
+deploy-cloudbuild: check-gcp-vars
+	@echo "Building image on GCP Cloud Build: $(IMAGE_NAME)..."
+	@gcloud builds submit --tag $(IMAGE_NAME) --project $(GCP_PROJECT)
+	@echo "✓ Image built on Cloud Build"
+	@make deploy GCP_PROJECT=$(GCP_PROJECT) GCP_REGION=$(GCP_REGION) SERVICE_NAME=$(SERVICE_NAME)
+
 # Help
 help:
 	@echo "Available commands:"
-	@echo "  make migrate-up       - Apply all pending migrations"
-	@echo "  make migrate-down     - Rollback last migration"
-	@echo "  make migrate-create   - Create new migration files"
-	@echo "  make migrate-version  - Show current migration version"
-	@echo "  make migrate-force    - Force migration to specific version"
-	@echo "  make dev              - Run application with live reload using Air"
-	@echo "  make run              - Run application"
-	@echo "  make build            - Build application binary"
-	@echo "  make test             - Run all tests"
-	@echo "  make test-unit        - Run only unit tests (fast)"
-	@echo "  make test-integration - Run integration tests"
-	@echo "  make test-coverage    - Run tests and show coverage report"
-	@echo "  make test-coverage-html - Run tests and open HTML coverage report"
-	@echo "  make test-all         - Run unit and integration tests"
-	@echo "  make vendor           - Update vendor dependencies"
-	@echo "  make clean            - Clean build artifacts"
+	@echo "  make migrate-up          - Apply all pending migrations"
+	@echo "  make migrate-down        - Rollback last migration"
+	@echo "  make migrate-version     - Show current migration version"
+	@echo "  make migrate-force       - Force migration to specific version"
+	@echo "  make dev                 - Run application with live reload using Air"
+	@echo "  make run                 - Run application"
+	@echo "  make build               - Build application binary"
+	@echo "  make test                - Run all tests"
+	@echo "  make test-unit           - Run only unit tests (fast)"
+	@echo "  make test-integration    - Run integration tests"
+	@echo "  make test-coverage       - Run tests and show coverage report"
+	@echo "  make test-coverage-html  - Run tests and open HTML coverage report"
+	@echo "  make test-all            - Run unit and integration tests"
+	@echo "  make vendor              - Update vendor dependencies"
+	@echo "  make clean               - Clean build artifacts"
+	@echo "  --- GCP Cloud Run ---"
+	@echo "  make docker-build        - Build Docker image"
+	@echo "  make docker-push         - Push image to GCR"
+	@echo "  make deploy              - Deploy to Cloud Run"
+	@echo "  make deploy-full         - Build + Push + Deploy (Local Docker)"
+	@echo "  make deploy-cloudbuild   - Build + Deploy (Using GCP Cloud Build)"

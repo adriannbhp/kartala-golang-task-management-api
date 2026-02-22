@@ -9,6 +9,7 @@ import (
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	_ "github.com/adriannbhp/kartala-golang-task-management-api/docs"
+	"golang.org/x/time/rate"
 )
  
 // SetupRoutes initializes the API routes
@@ -18,6 +19,8 @@ func SetupRoutes(r *gin.Engine, authHandler *auth.Handler, userHandler *users.Ha
  
 	// API V1
 	v1 := r.Group("/api/v1")
+	// Global Rate Limit: 5 request per second, burst of 10
+	v1.Use(middleware.RateLimiter(rate.Limit(5), 10))
 	v1.Use(middleware.ApiKeyMiddleware(apiKey))
 	{
 		// Auth routes
