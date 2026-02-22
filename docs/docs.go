@@ -988,7 +988,7 @@ var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "",
 	BasePath:         "/",
-	Schemes:          []string{"http", "https"},
+	Schemes:          []string{"https", "http"},
 	Title:            "Kartala Task Management API",
 	Description:      "API Server for Kartala Task Management API",
 	InfoInstanceName: "swagger",

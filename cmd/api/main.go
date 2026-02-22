@@ -10,7 +10,7 @@
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
  
-// @schemes http https
+// @schemes https http
 // @BasePath /
  
 // @securityDefinitions.apikey ApiKeyAuth
@@ -109,6 +109,10 @@ func SetupApp() (*gin.Engine, *config.DatabaseConfig, error) {
 
 	// Setup router
 	r := gin.New()
+	
+	// Trusted proxies for GCP Cloud Run
+	r.ForwardedByClientIP = true
+	r.SetTrustedProxies(nil) 
 	r.Use(middleware.CORSMiddleware())
 	r.Use(middleware.SecurityHeaders())
 	r.Use(middleware.RequestLogger(logger.Logger))

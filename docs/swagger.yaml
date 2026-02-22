@@ -630,8 +630,8 @@ paths:
       tags:
       - users
 schemes:
-- http
 - https
+- http
 securityDefinitions:
   ApiKeyAuth:
     in: header
